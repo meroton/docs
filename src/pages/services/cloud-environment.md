@@ -10,9 +10,9 @@ If you feel like you would rather use your own hardware please read more about [
 
 ## Free Tier
 
-The free tier allows you to use a remote build event stream and a remote cache. The free tier is limited to 10GB of caching and 100GB/month of throughput gives you the ability to analyze your builds to find bottlenecks and parts of your codebase that is rebuilt unnecessarily.
+The free tier allows you to use a remote build event stream and a remote cache. The free tier is limited to 10GB of caching and 100GB/month of throughput which gives you the ability to analyze your builds for bottlenecks and parts of your codebase that is rebuilt unnecessarily.
 
-The free environment does not offer remote execution and is located in Frankfurt (AWS region eu-central-1), for performance reason you should have as low latency as possible between the execturs and the cache. For maximum we recommend running your build remotely in Frankfurt.
+The free environment does not offer remote execution and is located in Frankfurt (AWS region eu-central-1), for performance reasons you should have as low latency as possible between the executors and the cache. For maximum performance we recommend running your build remotely in Frankfurt.
 
 ## Pricing
 
