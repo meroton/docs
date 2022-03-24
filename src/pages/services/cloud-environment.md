@@ -1,6 +1,6 @@
-[Other services](..)
-
 # Fully-Hosted Cloud Environment
+
+[← Other services](..)
 
 Managing your own hardware and and scaling it up to meet demand is a tedious task. Meroton offers a fully hosted cloud environment which allows you to focus on your own code while we handle the system.
 
