@@ -14,13 +14,13 @@ Managing your own physical hardware and scaling it up when demand rises is a ted
 
 The environment is pay as you use so it allows you to have the advantages of a very large build cluster without having to invest in a large data center.
 
-[Read more](./cloud-environment)
+[Read more →](./cloud-environment)
 
 ## Self-Hosted Remote Execution and Caching Environment
 
 If your business case requires you to manage your own server cluster, a self-hosted environment will still allow you to have the advantages of a remote execution environment. Meroton will help you set up [Buildbarn](https://github.com/buildbarn/bb-deployments) and offer software maintenance keeping the system running smoothly.
 
-[Read more](./self-hosted)
+[Read more →](./self-hosted)
 
 ## Patching Bazel and Buildbarn
 
