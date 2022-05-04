@@ -1,0 +1,50 @@
+---
+slug: bb-deploy-updates-2022-04
+title: Updates to Buildbarn deployment repo
+authors: benjamin
+tags: [meroton, release, buildbarn]
+---
+
+# Updates to Buildbarn April 2022
+
+The [sample configuration project for Buildbarn](https://github.com/buildbarn/bb-deployments) was recently updated after a long hiatus. As an aid for people to understand which changes have been done see the following high level summary.
+
+## April 2022 Updates
+
+This includes updates to Buildbarn since December 2020.
+
+### Authorizer Overhaul
+
+Authorizers have been rehauled to be more flexible it is now part of each individual cache and execution configuration.
+
+Using a JWT authorization bearer token has been added as an authorization method.
+
+### Hierarchical Blob Access
+
+Using hierarchical blob access allows blobs in instance name `foo/bar` to be accessed from instance `foo/bar/baz` but not instance `foo` or `foo/qux`.
+
+### Action Result Expiration
+
+An expiry can be added to action result which lets the action cache purge the result of an exection that was performed too far in the past. This can be used to ensure that all targets are rebuilt periodically even if they are accessed frequently enough to not normally be purged from the cache.
+
+### Read Only Cache Replicas
+
+Cache read traffic can now be sent to a read-only replica which is periodically probed for availability.
+
+### Concurrency Limiting Blob Replication
+
+Limit the number of concurrent replications to prevent network starvation
+
+### Run Commands as Another User
+
+Allows the commands to be run as a different user, on most platforms this means the bb-runner instance must run as root.
+
+### Size Class Analysis
+
+Allows executioners of different size classes to be used, the scheduler will attempt to utilize executioners efficiently but there is an inherent tradeof between throughput and latency. Once configured the scheduler will automatically attempt to keep track of which actions are best run on which executioners.
+
+### Execution Routing Policy
+
+The scheduler accepts an execution routing policy configuration that allows it to determine how to defer builds to different executioners.
+
+If you see any other changes you feel should get a mention feel free to submit a pull request at github usin the link below.
