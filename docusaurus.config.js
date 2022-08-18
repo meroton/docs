@@ -157,7 +157,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Meroton Inc.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Meroton AB`,
       },
       prism: {
         theme: lightCodeTheme,
