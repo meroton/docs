@@ -13,7 +13,7 @@ const config = {
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.svg",
-  deploymentBranch: "master",
+  deploymentBranch: "main",
   organizationName: "meroton", // Usually your GitHub org/user name.
   projectName: "meroton.github.io", // Usually your repo name.
   trailingSlash: true,
@@ -24,14 +24,14 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/meroton/docs/edit/master/",
+          editUrl: "https://github.com/meroton/docs/edit/main/",
         },
         blog: {
           path: "blog",
           // Simple use-case: string editUrl
           // editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/',
           // Advanced use-case: functional editUrl
-          editUrl: `https://github.com/meroton/docs/edit/master/`,
+          editUrl: `https://github.com/meroton/docs/edit/main/`,
           editLocalizedFiles: false,
           blogTitle: "Meroton Blog",
           blogDescription:
