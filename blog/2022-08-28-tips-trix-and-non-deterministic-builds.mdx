@@ -1,0 +1,18 @@
+---
+slug: tips-trix-and-nondeterminism
+title: Tips, Tricks & Non-Deterministic Builds
+authors: benjamin
+tags: [meroton, bazel, optimizing]
+---
+
+# Tips, Tricks & Non-Deterministic Builds
+
+When you have a remote build and cache cluster it can sometimes be hard to track down what exactly is using all of your building resources. To help with this we have started a tips and trix section in the documentation where we will share methods we use to debug and resolve slow builds.
+
+The first section is about build non-determinism. Ideally your build actions should produce the same output when run with the same input, in practice this is sometimes not the case. If you are lucky a non-deterministic action won't be noticed since the inputs for the non-deterministic action is unchanged it won't be rebuilt.
+
+If you're not so lucky the non-determinism stems from a bug in the implementation and you should definitiely pay attention to them. But how do you know which if any actions are non-deterministic?
+
+This is not trivial but we have added [a server side feature](/docs/tips/non-deterministic-builds) which allows detection of non-determinism with virtually no effort on your part.
+
+Once activated it reruns a configured fraction of your actions and automatically flags them if they produce different outputs. The scheduling is done outside of your bazel invocation so your build throughput will be unaffected at the cost of an increase in the number of resources consumed. We suggest 1% which will only increase your resource use by a trivial amount but you could of course set it to 100% which would double the cost of your builds.
