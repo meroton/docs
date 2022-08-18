@@ -1,0 +1,31 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+      - name: Install frozen dependencies
+        run: npm ci
+      - name: Build website
+        run: npm run build
+      - name: Check git repository cleanliness
+        run: git diff --exit-code HEAD --
+      - uses: webfactory/ssh-agent@v0.5.0
+        with:
+          ssh-private-key: ${{ secrets.GH_PAGES_DEPLOY_SSH_PRIVATE_KEY }}
+      - name: Deploy to GitHub Pages
+        env:
+          USE_SSH: true
+        run: |
+          git config --global user.email "bot@meroton.com"
+          git config --global user.name "GitHub Actions"
+          npm run deploy
