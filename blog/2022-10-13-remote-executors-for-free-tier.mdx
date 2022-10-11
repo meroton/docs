@@ -1,0 +1,46 @@
+---
+slug: remote-executors-for-free-tier
+title: Remote Executioners for the Free Environment
+authors: benjamin
+tags: [meroton, remote execution, cloud, free tier, starter tier]
+---
+
+# Free tier updates
+
+We've performed some updates to the free tier and our pricing model.
+
+## Shared Cache
+
+The free tier has been upgraded into an environment with a 1TB cache.
+This means that you can use the free tier without worrying about hitting any limits or setup process.
+
+Do note that while the cached items will only be accessible with the correct api keys,
+the storage area can be reclaimed by anyone.
+I.e. as the cache becomes full your items might be dropped.
+
+With the current churn we expect any items in the cache last at least a week.
+However, you should always treat items in the cache as something which might be dropped at any moment.
+The purpose and design of the cache is to maximize build performance, not to provide storage.
+
+## Shared executors
+
+New for the free environment is the introduction of remote execution,
+this was previously only available for paying customers.
+
+If you're using bazel you can simply add the `--remote_executor=<...>` flag and your builds will be done remotely.
+
+The free environment has access to 64 shared executors.
+
+## Starter tier
+
+If you need dedicated storage for evaluation purposes we also offer a starter tier.
+The starter tier is a streamlined environment with 100 GB of dedicated cache and access to the same 64 executors as the free tier.
+
+This allows you to try out remote execution and caching without being disturbed by others.
+While the 100GB dedicated cache will only be used by you and therefore not be overwritten by anyone else's build,
+the cache is still a cache and the system will still drop the cache entries if it determines it is useful for maximizing performance.
+
+## Need more executors?
+
+At the moment the starter tier has a fixed amount of shared executors.
+If you need a scalable solution contact us for setting up a custom Buildbarn environment of any size.

@@ -4,26 +4,33 @@
 
 Managing your own hardware and and scaling it up to meet demand is a tedious task. Meroton offers a fully hosted cloud environment which allows you to focus on your own code while we handle the system.
 
-The environment is pay as you use with a free quota, this allows you to have the advantage of an arbitrary large build cluster even if you use it very sporadically and with 0 capital expenses.
+The enterprise environment is pay as you use,
+this allows you to have the advantage of an arbitrary large build cluster with no capital expenses.
 
 If you feel like you would rather use your own hardware please read more about [self-hosted solutions](../self-hosted).
 
 ## Free Tier
 
-The free tier allows you to use a remote build event stream and a remote cache. The free tier is limited to 10GB of caching and 100GB/month of throughput which gives you the ability to analyze your builds for bottlenecks and parts of your codebase that is rebuilt unnecessarily.
+The free tier environment is a shared environment with a 1TB cache and 64 executors.
+With the free tier you have the ability to use remote caching with execution and analyze your builds for bottlenecks and parts of your codebase that is rebuilt unnecessarily.
 
-The free environment does not offer remote execution and is located in Frankfurt (AWS region eu-central-1), for performance reasons you should have as low latency as possible between the executors and the cache. For maximum performance we recommend running your build remotely in Frankfurt.
+The environment is located in Northern Europe.
+For maximum performance we recommend running your bazel remotely in the same general area.
+
+[Click to sign up ⧉](https://forms.gle/wchwDu6roWg6A7U29)
 
 ## Pricing
 
-If the free tier is insufficient for your demands we offer the following extra features.
+If the free tier is insufficient for your demands we offer to set up private environments with the following extra features.
 
-| Service            | Free Quota    | Additional Cost        |
-| ------------------ | ------------- | ---------------------- |
-| Cache Storage      | 10 GiB        | 1.49 USD / GiB / Month |
-| Throughput         | 100 GiB/month | 0.19 USD / GiB         |
-| Remote Execution   | None          | 0.005 USD / CPU minute |
-| SSO Integration    |               | Contact us             |
-| Region Replication |               | Contact us             |
+| Service               | Free                | Starter           | Enterprise |
+| --------------------- | ------------------- | ----------------- | ---------- |
+| Cache Storage         | Shared Cache        | 100 GB dedicated  | As needed  |
+| Remote Execution      | 64 shared executors | 64 shared workers | As needed  |
+| Appropriate Team Size | 1-2 members         | 10 members        | Any size   |
+| SSO Integration       | No                  | No                | Yes        |
+| Regions               | Northern Europe     | Northern Europe   | Anywhere   |
+| Support               | Community           | Community         | Enterprise |
+| Pricing               | $0 per month        | $99 per month     | Contact us |
 
 Please contact sales@meroton.com for any inquiries.

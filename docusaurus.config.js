@@ -100,11 +100,11 @@ const config = {
             label: "Blog",
             to: "/blog",
           },
-          // {
-          //   href: "https://github.com/meroton",
-          //   label: "GitHub",
-          //   position: "right",
-          // },
+          {
+            href: "https://forms.gle/wchwDu6roWg6A7U29",
+            label: "Sign up",
+            position: "right",
+          },
         ],
       },
       footer: {
@@ -128,6 +128,7 @@ const config = {
             items: [
               { label: "Services", to: "/services" },
               { label: "Contact", to: "/contact" },
+              { label: "Sign up", href: "https://forms.gle/wchwDu6roWg6A7U29" },
             ],
           },
           {
