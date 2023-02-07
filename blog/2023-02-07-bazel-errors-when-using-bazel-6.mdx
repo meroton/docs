@@ -1,0 +1,118 @@
+---
+slug: bazel-6-errors-build-without-the-bytes
+title: Bazel 6 Errors when using Build without the Bytes
+authors: benjamin
+tags: [bazel, bugs]
+---
+
+Starting from v6.0.0, Bazel crashes when building without the bytes.
+Because it sets `--experimental_action_cache_store_output_metadata`
+when using `--remote_download_minimal` or `--remote_download_toplevel`.
+
+Effectively this leads to Bazel getting stuck in a build failure loop
+when your remote cache evicts an item you need from the cache.
+
+```console
+developer@machine:~$ bazel test @abseil-hello//:hello_test --remote_download_
+minimal
+
+[0 / 6] [Prepa] BazelWorkspaceStatusAction stable-status.txt
+ERROR: /home/developer/.cache/bazel/_bazel_developer/139b99b96c4ab6cba5122193
+1a36e346/external/abseil-hello/BUILD.bazel:26:8: Linking external/abseil-hell
+o/hello_test failed: (Exit 34): 42 errors during bulk transfer:
+java.io.FileNotFoundException: /home/developer/.cache/bazel/_bazel_developer/
+139b99b96c4ab6cba51221931a36e346/execroot/cache_test/bazel-out/k8-fastbuild/b
+in/external/com_google_absl/absl/base/_objs/base/spinlock.pic.o (No such file
+ or directory)
+...
+Target @abseil-hello//:hello_test failed to build
+Use --verbose_failures to see the command lines of failed build steps.
+INFO: Elapsed time: 3.820s, Critical Path: 0.88s
+INFO: 5 processes: 4 internal, 1 remote.
+FAILED: Build did NOT complete successfully
+@abseil-hello//:hello_test                                   FAILED TO BUILD
+```
+
+The key here is **(Exit 34): xx errors during bulk transfer**.
+34 is Bazel's error code for Remote Error.
+
+The recommended solution is to set the flag explicitly to false,
+with `--experimental_action_cache_store_output_metadata=false`.
+To quickly solve the issue on your local machine you can run `bazel clean`.
+However, this will just push the error into the future.
+
+The bug is independent of which remote cache system you use
+and is tracked at [GitHub](https://github.com/bazelbuild/bazel/issues/17366).
+
+## Background
+
+When performing an analysis of what to build
+Bazel will ask the remote cache which items have already been built.
+Bazel will only schedule build actions for items
+that do not already exist in the cache.
+If running a build without the bytes[^1]
+the intermediary results will not be downloaded to the client.
+
+Should the cached items be evicted
+then Bazel will run into an unrecoverable error.
+It wants the remote system to perform an action using inputs from the cache,
+but they have disappeared.
+And Bazel can not upload them,
+as they were never downloaded to the client.
+The build would then dutifully crash
+(some work has been put into trying to
+[resolve this on the bazel side](https://groups.google.com/g/bazel-dev/c/WwNN4kiYSpc)
+but it has not been considered a priority).
+
+This puts an implicit requirement on the remote cache implementation.
+Artifacts need to be saved for as long as Bazel needs them.
+The problem here is that this is an undefined period of time.
+Bazel will not proactively check if the item still exists,
+nor in any other manner inform the cache that
+it will need the item in the future.
+
+## Before v6.0.0
+
+Bazel tied the lifetime of which items already exists in the cache
+(the existence cache)
+to the analysis cache.
+Whenever the analysis cache was purged it would also drop the existence cache.
+
+The analysis cache is purged quite frequently.
+It would therefore be rare in practice,
+that the existence cache would be out of date.
+Furthermore, since the existence cache was an in-memory cache,
+Bazel crashing would forcefully evict the existence cache.
+Thereby fixing the issue.
+
+## After v6.0.0
+
+With the
+`--experimental_action_cache_store_output_metadata` flag enabled by default
+the existence cache is instead committed to disk and
+never dropped during normal operation.
+
+This means two things:
+
+1. The implied requirement on the remote cache is effectively infinite. 
+2. Should this requirement not be met the build will fail.
+And since the existence cache is committed to disk Bazel will just
+fail again the next time you run it.
+
+Currently the only user-facing way of purging the existence cache
+is to run `bazel clean`.
+Which is generally considered an anti-pattern.
+
+If you are using the [bb-clientd](https://github.com/buildbarn/bb-clientd#-to-perform-remote-builds-without-the-bytes) `--remote_output_service`
+to run builds without the bytes
+(an alternative strategy to `--remote_download_minimal`)
+this will not affect you.
+
+[^1]: When using Bazel with remote execution
+remote builds are run in a remote server cluster.
+There is therefore no need for each developer
+to download the partial results of build.
+Bazel calls this feature
+[Remote Builds Without the Bytes](https://blog.bazel.build/2019/05/07/builds-without-bytes.html).
+The progress of the feature can be tracked at
+[GitHub](https://github.com/bazelbuild/bazel/issues/6862).
