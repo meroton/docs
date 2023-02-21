@@ -1,0 +1,147 @@
+---
+slug: bb-deployments-updates-2023-02
+title: Updates to Buildbarn deployment repo as of Febuary 2023
+authors: benjamin
+tags: [release, buildbarn]
+---
+
+The example configuration project for buildbarn
+[bb-deployments](https://github.com/buildbarn/bb-deployments)
+has gotten updates.
+
+This is a continuation of the
+[updates from last year article](/blog/bb-deploy-updates-2022-04)
+and is a high level summary of what has happened since April 2022 up to 2023-02-16.
+
+## Let ReferenceExpandingBlobAccess support GCS
+
+ReferenceExpandingBlobAccess already supports S3 so support was extended to Google Cloud Storage buckets.
+
+## Support for prefetching Virtual Filesystems
+
+Running workers with Fuse allows inputs for an action
+to be downloaded on demand.
+This significantly reduces the amount of data
+that gets sent in order to run overspecified actions.
+This however leads to poor performance for actions
+which reads a lot of their inputs synchronously.
+
+With the prefetcher most of these actions can be recognized
+and data which is likely to be needed
+can be downloaded ahead of time.
+
+## Support for sha256tree
+
+Buildbarn has added support for sha256tree
+which uses sha256 hashing over a tree structure similar to blake3.
+
+This algorithm will allow large CAS objects to be chunked and decompositioned
+with guaranteed data integrity while still using sha256 hardware instructions.
+
+## Completeness checking now streams REv2 Tree objects
+
+This change introduces a small change to the configuration schema. If you previous had this:
+```
+backend: { completenessChecking: ... },
+```
+You will now need to write something along these lines:
+```
+backend: {
+    completenessChecking: {
+        backend: ...,
+        maximumTotalTreeSizeBytes: 64 * 1024 * 1024,
+    },
+},
+```
+
+See also the
+[bb-storage commit 1b84fa8](https://github.com/buildbarn/bb-storage/commit/1b84fa824dc60e77776ce50e05c549fdf20c089b).
+
+## Postponed healthy service status
+
+The healthy and serving status,
+i.e. HTTP `/-/healthy` and
+[grpc_health_v1.HealthCheckResponse_SERVING](https://pkg.go.dev/google.golang.org/grpc/health/grpc_health_v1#HealthCheckResponse_ServingStatus),
+are now postponed until the whole service is up and running.
+Before, the healthy status was potentially reported before starting to listen to the gRPC ports.
+Kubernetes will now wait until the service is up before forwarding connections to it.
+
+## Server keepalive parameter options
+
+The option `buildbarn.configuration.grpc.ServerConfiguration.keepalive_parameters` can be used for L4 load balancing,
+to control when to ask clients to reconnect.
+For default values, see
+[keepalive.ServerParameters](https://pkg.go.dev/google.golang.org/grpc@v1.49.0/keepalive#ServerParameters).
+
+## Graceful termination of `LocalBlobAccess`
+
+When `SIGTERM` or `SIGINT` is received, the `LocalBlobAccess` now synchronize data to disk before shutting down.
+Deployments using persistent storage will no longer observe loss of data when restarting the `bb_storage` services.
+
+## Non-sector Aligned Writes to Block Device
+
+Using sector aligned storage is wasteful for the action cache where the messages are typically very small.
+Buildbarn can now fill all the gaps when writing, making storage more efficient.
+
+## DAG Shaped BlobAccess Configuration
+
+Instead of a tree shaped BlobAccess configuration, the `with_labels` notation allows a directed acyclic graph.
+See also the
+[bb-storage commit cc295ad](https://github.com/buildbarn/bb-storage/commit/cc295adc0f05cd579d48a65325ce54b54331c6a6).
+
+## NFSv4 as worker filesystem
+
+The `bb_worker` can now supply the working directory for `bb_runner` using NFSv4.
+Previously, FUSE and hard linking files from the worker cache were the only two options.
+This addition was mainly done to overcome the poor FUSE support on macOS.
+
+The NFSv4 server in `bb_worker` only supports macOS at the moment.
+No effort has been spent to write custom mount logic for other systems yet.
+
+## Specify `forwardMetadata` with a JMESPath
+
+Metadata forwarding is now more flexible, the JMESPath expressions can for example add authorization result data.
+The format is described in
+[grpc.proto](https://github.com/buildbarn/bb-storage/blob/0c2fcad5872b0fef47bb5bee8aba9518dc2fe465/pkg/proto/configuration/grpc/grpc.proto#L55-L93).
+
+A common use case is to replace
+```jsonnet
+{
+    forwardMetadata: ["build.bazel.remote.execution.v2.requestmetadata-bin"],
+}
+```
+with
+```jsonnet
+{
+    addMetadataJmespathExpression: '{
+        "build.bazel.remote.execution.v2.requestmetadata-bin":
+            incomingGRPCMetadata."build.bazel.remote.execution.v2.requestmetadata-bin"
+    }',
+}
+```
+
+## Tracing: Deprecate the Jaeger collector span exporter
+
+This option is deprecated, as Jaeger 1.35 and later provide native support for the OpenTelemetry protocol.
+
+## `bb-deployments` Ubuntu 22.04 Example Runner Image
+
+The [rbe_autoconfig](https://github.com/bazelbuild/bazel-toolchains/blob/4.0.0/rules/rbe_repo.bzl#L896)
+in [bazel-toolchains](https://github.com/bazelbuild/bazel-toolchains)
+has been deprecated. In bb-deployments it has been replaced by the
+[Act](https://github.com/nektos/act/blob/master/IMAGES.md) image
+[ghcr.io/catthehacker/ubuntu:act-22.04](https://github.com/catthehacker/docker_images),
+distributed by [catthehacker](https://github.com/catthehacker/docker_images),
+used for running GitHub Actions locally under Ubuntu 22.04.
+
+## `bb-deployments` Integration Tests
+
+The [bare deployment](https://github.com/buildbarn/bb-deployments/tree/ce123473f27290648d1e56f7072468eb6b67fefb/bare) and
+[Docker Compose deployment](https://github.com/buildbarn/bb-deployments/tree/ce123473f27290648d1e56f7072468eb6b67fefb/docker-compose)
+have now got [tests scripts](https://github.com/buildbarn/bb-deployments/tree/ce123473f27290648d1e56f7072468eb6b67fefb/tools)
+that builds and tests `@abseil-hello//:hello_test` remotely, shuts down and then checks for 100% cache hit after restart.
+Another CI test is checking for minimal differences between the Docker Compose deployment and
+the [Kubernetes deployment](https://github.com/buildbarn/bb-deployments/tree/ce123473f27290648d1e56f7072468eb6b67fefb/kubernetes).
+
+If there are any other changes you feel deserve a mention
+feel free to submit a pull request at github using the link below.
