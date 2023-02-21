@@ -1,0 +1,92 @@
+---
+slug: bb-deploy-updates-2022-09
+title: Updates to Buildbarn September 2022
+authors: fredrik
+tags: [meroton, release, buildbarn]
+---
+
+# Updates to Buildbarn September 2022
+
+The [bb-deployments](https://github.com/buildbarn/bb-deployments) sample configuration has been updated include changes until 2022-09-26.
+Below follows a high level summary of changes since April 2022.
+
+## Non-sector Aligned Writes to Block Device
+
+Using sector aligned storage is wasteful for the action cache where the messages are typically very small.
+Buildbarn can now fill all the gaps when writing, making storage more efficient.
+
+## DAG Shaped BlobAccess Configuration
+
+Instead of a tree shaped BlobAccess configuration, the `with_labels` notation allows a directed
+acyclic graph. See also the
+[bb-storage commit cc295ad](https://github.com/buildbarn/bb-storage/commit/cc295adc0f05cd579d48a65325ce54b54331c6a6).
+
+## NFSv4 as worker filesystem
+
+The `bb_worker` can now supply the working directory for `bb_runner` using NFSv4.
+Previously, FUSE and hard linking files from the worker cache were the only two options.
+This addition was mainly done to overcome the poor FUSE support on macOS.
+
+The NFSv4 server in `bb_worker` only supports macOS at the moment.
+No effort has been spent to write custom mount logic for other systems yet.
+
+## Graceful termination of `LocalBlobAccess`
+
+When `SIGTERM` or `SIGINT` is received, the `LocalBlobAccess` now synchronize data to disk before shutting down.
+Deployments using persistent storage will no longer observe loss of data when restarting the `bb_storage` services.
+
+## Specify `forwardMetadata` with a JMESPath
+
+Metadata forwarding is now more flexible, the JMESPath expressions can for example add
+authorization result data. The format is described in
+[grpc.proto](https://github.com/buildbarn/bb-storage/blob/0c2fcad5872b0fef47bb5bee8aba9518dc2fe465/pkg/proto/configuration/grpc/grpc.proto#L55-L93).
+
+A common use case is to replace
+```jsonnet
+{
+    forwardMetadata: ["build.bazel.remote.execution.v2.requestmetadata-bin"],
+}
+```
+with
+```jsonnet
+{
+    addMetadataJmespathExpression: '{
+        "build.bazel.remote.execution.v2.requestmetadata-bin":
+            incomingGRPCMetadata."build.bazel.remote.execution.v2.requestmetadata-bin"
+    }',
+}
+```
+
+Authorizers have been rehauled to be more flexible it is now part of each individual cache and execution configuration.
+
+Using a JWT authorization bearer token has been added as an authorization method.
+
+## Tracing: Deprecate the Jaeger collector span exporter
+
+This option is deprecated, as Jaeger 1.35 and later provide native support for the OpenTelemetry protocol.
+
+## `bb-deployments` Ubuntu 22.04 Example Runner Image
+
+The [rbe_autoconfig](https://github.com/bazelbuild/bazel-toolchains/blob/4.0.0/rules/rbe_repo.bzl#L896)
+in [bazel-toolchains](https://github.com/bazelbuild/bazel-toolchains)
+has been deprecated. In bb-deployments it has been replaced by the
+[Act](https://github.com/nektos/act/blob/master/IMAGES.md) image
+[ghcr.io/catthehacker/ubuntu:act-22.04](https://github.com/catthehacker/docker_images),
+distributed by [catthehacker](https://github.com/catthehacker/docker_images),
+used for running GitHub Actions locally under Ubuntu 22.04.
+
+## `bb-deployments` Integration Tests
+
+The [bare deployment](https://github.com/buildbarn/bb-deployments/tree/ce123473f27290648d1e56f7072468eb6b67fefb/bare) and
+[Docker Compose deployment](https://github.com/buildbarn/bb-deployments/tree/ce123473f27290648d1e56f7072468eb6b67fefb/docker-compose)
+have now got [tests scripts](https://github.com/buildbarn/bb-deployments/tree/ce123473f27290648d1e56f7072468eb6b67fefb/tools)
+that builds and tests `@abseil-hello//:hello_test` remotely, shuts down and then checks for 100% cache hit after restart.
+Another CI test is checking for minimal differences between the Docker Compose deployment and
+the [Kubernetes deployment](https://github.com/buildbarn/bb-deployments/tree/ce123473f27290648d1e56f7072468eb6b67fefb/kubernetes).
+
+
+
+
+
+
+If you see any other changes you feel should get a mention feel free to submit a pull request at github using the link below.
