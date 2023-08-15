@@ -152,6 +152,10 @@ const config = {
                 to: "/blog",
               },
               {
+                label: "Bug bounty",
+                to: "/bug-bounty",
+              },
+              {
                 label: "GitHub",
                 href: "https://github.com/meroton",
               },
