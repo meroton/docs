@@ -156,6 +156,10 @@ const config = {
                 to: "/bug-bounty",
               },
               {
+                label: "Privacy Policy",
+                to: "/privacy-policy",
+              },
+              {
                 label: "GitHub",
                 href: "https://github.com/meroton",
               },
