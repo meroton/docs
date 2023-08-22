@@ -11,7 +11,7 @@ When you have a remote build and cache cluster it can sometimes be hard to track
 
 The first section is about build non-determinism. Ideally your build actions should produce the same output when run with the same input, in practice this is sometimes not the case. If you are lucky a non-deterministic action won't be noticed since the inputs for the non-deterministic action is unchanged it won't be rebuilt.
 
-If you're not so lucky the non-determinism stems from a bug in the implementation and you should definitiely pay attention to them. But how do you know which if any actions are non-deterministic?
+If you're not so lucky the non-determinism stems from a bug in the implementation and you should definitely pay attention to them. But how do you know which if any actions are non-deterministic?
 
 This is not trivial but we have added [a server side feature](/docs/tips/non-deterministic-builds) which allows detection of non-determinism with virtually no effort on your part.
 
