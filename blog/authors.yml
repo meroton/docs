@@ -9,3 +9,7 @@ fredrik:
   # title: Some guy
   # url:
   image_url: /img/fredrik-avatar.png
+
+nils:
+  name: Nils Wireklint
+  image_url: /img/nils-avatar.jpg
