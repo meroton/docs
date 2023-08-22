@@ -1,0 +1,35 @@
+---
+slug: improved-chroot-in-buildbarn
+title: Improved Chroot in Buildbarn
+authors: nils
+tags: [linux, syscalls, buildbarn]
+---
+
+# Improved chroot in Buildbarn
+
+We have just started a documentation series
+describing the Buildbarn `chroot` runners,
+and how they can be used for hermetic input roots
+that contain all the required tools.
+This includes implementation notes for a "mountat" functionality
+created through the new Linux mount API,
+how you can use this under-documented API,
+and its shortcomings.
+And how this _can/will be_ integrated into Buildbarn,
+with technical descriptions of the workers and runners.
+
+The first sections are already available, with more to come!
+
+Sections:
+
+* [Use chroot in Buildbarn]
+* [Implement mountat with the new mount API]
+* [Unmount from relative file paths and directory file descriptors]
+
+Reference code repository:
+
+* https://github.com/meroton/prototype-mountat/
+
+[Implement mountat with the new mount API]: /docs/improved-chroot-in-Buildbarn/implementing-mountat/
+[Unmount from relative file paths and directory file descriptors]: /docs/improved-chroot-in-Buildbarn/implementing-unmountat/
+[Use chroot in Buildbarn]: /docs/improved-chroot-in-Buildbarn/chroot-in-buildbarn/

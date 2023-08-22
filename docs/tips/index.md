@@ -2,7 +2,7 @@
 
 I can sometimes be difficult to evaluate what exactly is happening behind the curtains of your build.
 
-How do you know if some artifacts are rebuilt unecessarily?
+How do you know if some artifacts are rebuilt unnecessarily?
 
 Non-deterministic actions?
 
