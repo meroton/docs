@@ -5,6 +5,14 @@ authors: benjamin
 tags: [bazel, bugs]
 ---
 
+_** UPDATE: ** Bazel has a workaround for this issue
+preventing the permanent build failure loop from 6.1.0 and
+a proper fix with the introduction of
+[`--experimental_remote_cache_ttl`](https://bazel.build/reference/command-line-reference#flag--experimental_remote_cache_ttl)
+in Bazel 7_
+
+---
+
 Starting from v6.0.0, Bazel crashes when building without the bytes.
 Because it sets `--experimental_action_cache_store_output_metadata`
 when using `--remote_download_minimal` or `--remote_download_toplevel`.
@@ -94,10 +102,10 @@ never dropped during normal operation.
 
 This means two things:
 
-1. The implied requirement on the remote cache is effectively infinite. 
+1. The implied requirement on the remote cache is effectively infinite.
 2. Should this requirement not be met the build will fail.
-And since the existence cache is committed to disk Bazel will just
-fail again the next time you run it.
+   And since the existence cache is committed to disk Bazel will just
+   fail again the next time you run it.
 
 Currently the only user-facing way of purging the existence cache
 is to run `bazel clean`.
@@ -108,11 +116,12 @@ to run builds without the bytes
 (an alternative strategy to `--remote_download_minimal`)
 this will not affect you.
 
-[^1]: When using Bazel with remote execution
-remote builds are run in a remote server cluster.
-There is therefore no need for each developer
-to download the partial results of build.
-Bazel calls this feature
-[Remote Builds Without the Bytes](https://blog.bazel.build/2019/05/07/builds-without-bytes.html).
-The progress of the feature can be tracked at
-[GitHub](https://github.com/bazelbuild/bazel/issues/6862).
+[^1]:
+    When using Bazel with remote execution
+    remote builds are run in a remote server cluster.
+    There is therefore no need for each developer
+    to download the partial results of build.
+    Bazel calls this feature
+    [Remote Builds Without the Bytes](https://blog.bazel.build/2019/05/07/builds-without-bytes.html).
+    The progress of the feature can be tracked at
+    [GitHub](https://github.com/bazelbuild/bazel/issues/6862).
