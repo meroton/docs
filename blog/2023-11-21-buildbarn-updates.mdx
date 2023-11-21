@@ -1,0 +1,79 @@
+---
+slug: buildbarn-updates-2023-11
+title: Updates to Buildbarn as of November 2023
+authors: benjamin
+tags: [release, buildbarn]
+---
+
+This is a continuation of the
+[previous update article](/blog/bb-deploy-updates-2022-04)
+and is a high level summary of what has happened in Buildbarn from 2023-02-16 to 2023-11-14.
+
+## Added support for JWTs signed with RSA
+
+JWTs signed with RSA are now supported,
+the following JWT signing algorithms are now supported:
+
+- HS256
+- HS384
+- HS512
+- RS256
+- RS384
+- RS512
+- EdDSA
+- ES256
+- ES384
+- ES512
+
+## Generalized tuneables for Linux BDI options
+
+Linux 6.2 added a sysyfs attribute for toggling BDI_CAP_SCTRICLIMIT on FUSE mounts.
+
+If using the FUSE backed virtual file system on Linux 6.2
+adding \{ "strict_limit": "0" \} to `linux_backing_dev_info_tunables`
+will remove the BDP_CAP_STRICTLIMIT flag from the FUSE mount.
+
+This may improve fileystem performance
+especially when running build actions which
+uses mmap:ed files extensively.
+
+## Add support for injecting Xcode environment variables
+
+Remote build with macOS may call into locally installed copies of Xcode.
+The path to the local copy of Xcode may vary
+and bazel assumes that the remote execution service
+is capable of processing Xcode specific environment variables.
+
+See the [proto files](https://github.com/buildbarn/bb-remote-execution/blob/master/pkg/proto/configuration/bb_runner/bb_runner.proto#L133) for details.
+
+## Add a minimum timestamp to ActionResultExpiringBlobAccess
+
+A misbehaving worker may polluted the action cache,
+after fixing the misbehaving worker we would rather not throw away all old actions.
+
+A minimum timestamp in ActionResultExpiringBlobAccess
+allows us to mark a timestamp in the past
+before which the action should be considered invalid.
+
+## Add Authentication Middleware to HTTP Servers
+
+Much like the gRPC servers are capable of authenticated configuration
+the http servers can now also require authentication.
+
+This allows the bb_browser and bb_scheduler ui
+to authenticate access using OAuth2 without involving any other middleware.
+
+This also allows us to add authorization configuration for administrative tasks
+such as draining workers or killing of jobs.
+
+## Authorization Validation is now done with a JSON Web Key Set
+
+JSON Web Key Sets (jwks) is a standard format
+which allows us to specificy multiple different encryption keys
+that may have been used to sign our jwt authentication.
+
+Buildbarn can load the jwks specification,
+either inline or as a file,
+when specifying trusted encryption keys.
+
+This allows us to have rotation with overlap of encryption keys.
