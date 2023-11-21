@@ -36,7 +36,7 @@ const config = {
           blogTitle: "Meroton Blog",
           blogDescription:
             "Free form articles describing technical issues, solutions and news from meroton",
-          blogSidebarCount: 5,
+          blogSidebarCount: "ALL",
           blogSidebarTitle: "All articles",
           routeBasePath: "blog",
           include: ["**/*.{md,mdx}"],
