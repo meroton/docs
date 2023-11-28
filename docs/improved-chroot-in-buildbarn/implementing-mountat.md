@@ -5,11 +5,10 @@ sidebar_position: 3
 
 # Create "mountat" with the new Linux mount API
 
-"Mountat" is not a syscall, historically you need absolute filepaths to create mounts,
-but with the new mount API we can create a function that mount on relative paths.
-This is the name we want for a syscall
-that mounts to a file descriptor,
-customarily `<operation>at`.
+Historically you needed absolute filepaths to create mounts,
+or jump through hoops in syscall land.
+But with the new mount API we can create a function that mount on relative paths
+through a directory file descriptor.
 This document describes how we implement "mountat".
 
 Why do we want to use file descriptors?
@@ -30,8 +29,8 @@ For the purpose of mounting a filesystem,
 this abstraction has *veiled* the filesystem,
 so we would like to operate on a directory file descriptor.
 This can be done [by combining `mount` with `fchdir`],
+or to open the file descriptors individually [lxc project does].
 but a full "mountat" is also possible.
-This is also what the [lxc project does].
 
 [by combining `mount` with `fchdir`]: https://github.com/meroton/prototype-mountat/blob/main/c-prototypes/relative_mount.c
 [lxc project does]: https://github.com/lxc/lxc/blob/main/src/lxc/mount_utils.c#L613
@@ -44,12 +43,14 @@ and integration with Buildbarn.
 
 ## The new mount API
 
-Recent Linux work from David Howells at Redhat introduced several new syscalls, which form "new mount API",
+Recent Linux work from David Howells at Redhat introduced several new syscalls,
+which form "new mount API",
 this is primarily used to speed up work with namespaces and moving mounts back and forth.
 To break up the monolithic `mount` call into smaller pieces.
 The benefit (for us) is that it allows relative paths.
 Below are two example programs that can be used to mount at a relative path,
-or at a directory file descriptor, which is more convenient for some applications.
+or at a directory file descriptor,
+which is more convenient for some applications.
 
 > Six (or seven) new system calls for filesystem mounting
 > https://lwn.net/Articles/759499/
@@ -172,4 +173,4 @@ but `fsconfig` is [not merged yet], so a simple implementation is provided just 
 as that is more complex than most syscalls.
 
 [version 2.36]: https://www.phoronix.com/news/GNU-C-Library-Glibc-2.36
-[not merged yet]: https://go-review.googlesource.com/c/sys/+/399995/
+[not merged yet]: https://github.com/golang/go/issues/59537

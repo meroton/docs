@@ -35,6 +35,9 @@ But we have used it for a while and you can use it too.
 https://github.com/buildbarn/bb-remote-execution/issues/115
 § Proof of Concept Patch
 
+This will not be submitted to the code,
+but serves as a good demonstration of the problem.
+
 ## Second best-effort: use new 'mountat' but hack unmounting through absolute paths
 
 Through [implementing mountat] ([in golang])
@@ -76,7 +79,7 @@ This is written in `go`, just like [Buildbarn].
 [mountat.c]:     https://github.com/meroton/prototype-mountat/blob/main/c-prototypes/mountat.c
 [mountat_dfd.c]: https://github.com/meroton/prototype-mountat/blob/main/c-prototypes/mountat_dfd.c
 
-A pull request is forth-coming.
+We will not pursue adding this to Buildbarn.
 
 [implementing mountat]: /docs/improved-chroot-in-Buildbarn/implementing-mountat/
 [in golang]: https://github.com/meroton/prototype-mountat/blob/main/cmd/mountat/main.go#L231
@@ -89,7 +92,11 @@ but better than the two previous alternatives.
 The most pragmatic solution is to add a semaphore around this code,
 to make sure that we return the program's working directory after unmounts.
 
-We are currently working on this solution.
+After submitting the initial PR we found that [Buildbarn already did this].
+By creating the semaphore again and getting a "duplicate symbol definition" error from the LSP.
+That's how it goes sometimes...
+
+[Buildbarn already did this]: https://github.com/buildbarn/bb-storage/blob/ece87ab6dc2a9e1e592d2032f5a02c3694765cfc/pkg/filesystem/local_directory_unix.go#L271
 
 ### Alternative: unmount in a subprocess
 
@@ -125,27 +132,25 @@ I hope someone can spot my errors, so we find the solution.
 But maybe the vagaries of filesystems and mounts
 are so that this is not something Linux wants?
 
-# Implementation log
-
-## Debug bb-runner
-
-It is useful to step through the code to understand that everything works.
-This is a heavy intrusion into the deployment and should not be committed.
-
-TODO
+# Tips and Tricks from development
 
 ## Observe filesystem operations in the docker
 
-A new id is generated each the image starts.
+You can see what mounts are active (and removed!) inside the docker image.
+A new id is generated each time the image starts,
+so two commands are needed.
+You should see two mounts for each active action,
+and no remaining mounts for completed actions.
+
 ```
-id="$(docker-compose $ docker ps \
+id="$(docker-compose $ docker ps                 \
   | grep docker-compose-runner-fuse-distroless-1 \
   | cut -d ' ' -f1)"
-docker-compose $ docker exec -it "id" bash
+docker-compose $ docker exec -it "$id" bash
 
-  root@21dee4887020:/tmp# mount -v | grep /worker/build
-  bb_worker on /worker/build type fuse.SimpleRawFileSystem (rw,relatime,user_id=0,group_id=0,allow_other)
-  /proc on /worker/build/f3fb7c74c3b342a0/root/proc type proc (rw,noexec,relatime)
-  /sys on /worker/build/f3fb7c74c3b342a0/root/sys type sysfs (rw,noexec,relatime)
-  ...
+root@21dee4887020:/tmp# mount -v | grep /worker/build
+bb_worker on /worker/build type fuse.SimpleRawFileSystem (rw,relatime,user_id=0,group_id=0,allow_other)
+/proc on /worker/build/f3fb7c74c3b342a0/root/proc type proc (rw,noexec,relatime)
+/sys on /worker/build/f3fb7c74c3b342a0/root/sys type sysfs (rw,noexec,relatime)
+...
 ```

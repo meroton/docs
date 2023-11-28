@@ -44,7 +44,7 @@ Unfortunately I have not found the official man pages anywhere.
 So the risk of this article being out-of-date is looming.
 Just as the announcement gave examples with `write` that does not work with the real code.
 
-Quote the manpages (redacted):
+Quote the manpages:
 
     move_mount () call moves a mount from one place to another;
     it can also be used to attach an
@@ -79,7 +79,7 @@ which does not use the new API at all.
 
 ## Move mount
 
-We try the given examples (redacted):
+We try the given examples:
 
     EXAMPLES
     The move_mount ()function can be used like the following:
@@ -172,16 +172,17 @@ But we can not move it either.
 
 ## EINVAL
 
-We fall short with this message,
+We are stumped by this message,
 the next step would be to dig into the [source code],
 [debug the kernel code in a VM],
 or see if the file descriptors give more information.
 
-From the older documentation of `fsopen`,
-which also said that we should write to the file descriptors
-that did not work.
-So this is left with some skepticism,
-but to continue the work it is something to start with.
+From the older documentation of `fsopen`, there are some hints to how to find more information.
+But we suspect that this is out-of-date,
+as the same version of the documentation wrote commands into the file descriptors,
+which is not how the merged code works.
+So this is quoted with some skepticism,
+but serves as a starting point to continue troubleshooting this.
 
     Message Retrieval Interface
 
@@ -190,13 +191,13 @@ but to continue the work it is something to start with.
     This will return formatted messages that are prefixed
     to indicate their class:
 
-    "e <message>"
+    "e \<message\>"
     An error message string was logged.
 
-    i <message>"
+    "i \<message\>"
     An informational message string was logged.
 
-    w <message>"
+    "w \<message\>"
     An warning message string was logged.
 
     Messages are removed from the queue as they're read.
@@ -222,16 +223,22 @@ move_mount(mmmfd, "", d_dfd, mountpoint, MOVE_MOUNT_F_EMPTY_PATH);
 Google does not help in finding many uses cases,
 but there are a few emails with newer dates:
 
-    `open_tree`: https://lore.kernel.org/linux-man/159827188271.306468.16962617119460123110.stgit@warthog.procyon.org.uk/
-    `move_mount`: https://lore.kernel.org/linux-man/159827189025.306468.4916341547843731338.stgit@warthog.procyon.org.uk/
+  * [open_tree]
+  * [move_mount]
+
+[open_tree]: https://lore.kernel.org/linux-man/159827188271.306468.16962617119460123110.stgit@warthog.procyon.org.uk/
+[move_mount]: https://lore.kernel.org/linux-man/159827189025.306468.4916341547843731338.stgit@warthog.procyon.org.uk/
 
 But they have the same examples
 
 There is also the `lxc` project, which has the most code that use the new API.
 But they do not use an "unmountat" function.
 
-    `create detached mount`: https://github.com/lxc/lxc/blob/main/src/lxc/mount_utils.c#L291
-    `mount_at`: https://github.com/lxc/lxc/blob/main/src/lxc/mount_utils.c#L613
+  * [create detached mount]
+  * [mount_at]
+
+[create detached mount]: https://github.com/lxc/lxc/blob/main/src/lxc/mount_utils.c#L291
+[mount_at]: https://github.com/lxc/lxc/blob/main/src/lxc/mount_utils.c#L613
 
 There is also the [path_unmountat] function in the kernel,
 but to my reading this is part of the filesystem subsystem,
@@ -239,11 +246,10 @@ and not plumbed through to a syscall for regular mounts.
 
 This is another interesting use case: [NFS-mount-in-user-namespace]
 
+[path_unmountat]: https://github.com/shiziwen/linux/blob/26b0332e30c7f93e780aaa054bd84e3437f84354/fs/namei.c#L2305
 [NFS-mount-in-user-namespace]: https://github.com/kinvolk/nfs-mount-in-userns
 
-[path_unmountat]: https://github.com/shiziwen/linux/blob/26b0332e30c7f93e780aaa054bd84e3437f84354/fs/namei.c#L2305
-
-## Relative unmount
+## Acceptable solution: relative unmount
 
 To leave this in a some what positive note,
 we can use a relative `unmount` like this relative mount example from [Linux's test].
@@ -256,8 +262,10 @@ E_fchdir(dfd);
 E_mount("tmpfs", "./mnt", "tmpfs", MS_NOSUID | MS_NODEV, "");
 ```
 
-This relative mount technique will carry us to a [workable patch to Buildbarn].
-With prototype c-code [available here].
+This relative mount technique is acceptable for Buildbarn.
+During the process to patch this,
+we realized that [Buildbarn already did this], :).
+Simple c-code is [available here] with [similar go code here].
 
 ```c
 int
@@ -275,11 +283,9 @@ main(int argc, char* argv[])
 }
 ```
 
-With [similar go code here].
-
 [available here]: https://github.com/meroton/prototype-mountat/blob/main/c-prototypes/relative_mount.c
 [similar go code here]: https://github.com/meroton/prototype-mountat/blob/cmd/relative-unmount/main.go
-[workable patch to Buildbarn]: /docs/improved-chroot-in-Buildbarn/integrating-mountat/
+[Buildbarn already did this]: https://github.com/buildbarn/bb-storage/blob/ece87ab6dc2a9e1e592d2032f5a02c3694765cfc/pkg/filesystem/local_directory_unix.go#L271
 
 ## Request of the audience
 
