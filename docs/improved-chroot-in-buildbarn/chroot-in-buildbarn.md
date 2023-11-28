@@ -69,10 +69,8 @@ If your action roots have many files,
 you do not want to use the hardlinking workers.
 Especially if many of the tool files are never read,
 it is better to use `fuse` workers.
-There the input root is prepared in a `fuse` filesystems,
+There the input root is prepared in a `fuse` or `NFSv4` filesystem
 and downloaded lazily.
-
-<!-- NOTE: or `NFSv4` on macOs -->
 
 Fuse setup is trickier, thankfully we have [already demonstrated it in bb-deployments].
 It is important to set up the `docker` `bind` mounts correctly,

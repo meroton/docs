@@ -5,16 +5,8 @@ sidebar_position: 2
 
 # The problem with special mounts
 
-<!-- This is implemented with abstract `Directory` classes -->
-<!-- that do not allow the code to know the path to the directories. -->
-
-<!-- We will return to that [later], -->
-<!-- as it poses a problem when we try to mount filesystems in the _action directory_. -->
-
 The [`fuse` and `chroot` setup]
 works well for many tools, but not all.
-The goal of [this series] is to solve this,
-so you never have to worry about the problem below.
 
 Some tools rely on the `/proc` filesystem to operate.
 The best example is `cargo` and `rustc` that fails with the following message:
@@ -22,14 +14,17 @@ The best example is `cargo` and `rustc` that fails with the following message:
     Thread 'main' panicked at 'failed to get current_exe:
     no /proc/self/exe available. Is /proc mounted?
 
+The goal of this series is to [solve this],
+so you never have to worry about the problem stated here.
+
 There are also problems with `go`, `node`, `javac` that have been observed in the [bb-deployments] repo.
 Just like `rustc`, the `go` compiler tries to find itself through `/proc/self/exe`
-and find the GOROOT based on that path.
+and find the `GOROOT` based on that path.
 We have used [bb-deployments] as the development repo
 when diagnosing this problem and developing patches,
 it can be built successfully when the filesystems are mounted.
 
-[this series]: /docs/improved-chroot-in-Buildbarn/implementing-mountat/
+[solve this]: /docs/improved-chroot-in-Buildbarn/implementing-mountat/
 [`fuse` and `chroot` setup]: /docs/improved-chroot-in-buildbarn/chroot-in-buildbarn/
 
 ## Mounting the special filesystems in the worker?
@@ -49,13 +44,6 @@ Combined with the _worker_'s virtual filesystem,
 where the directories can be purely virtual
 we have nothing to pin mounts on in the _worker_.
 
-<!-- This file uses a virtual `Directory` abstraction that hides the full path of a directory, -->
-<!-- as an explicit design decision. -->
-<!-- As `FUSE` and `NFSv4` can speed up build drastically by avoiding downloads -->
-<!-- and hardlinking overhead of unused files. -->
-<!-- This is important when we want to send a full userspace implementation, -->
-<!-- we do not expect to use a very large fraction of the files. -->
-
 ## Mounting the special filesystems in the runner
 
 We want to mount the filesystems in the _runner_
@@ -69,19 +57,9 @@ We know that code for one action can not address paths outside its input root.
 
 ## The search for "mountat"
 
-<!-- This is kind of an introduction to the implementation log -->
-<!-- and not part of the documentation for `chroot` itself. -->
-
 This led to a search for the missing "mountat" syscall,
 which can be [implemented with the new Linux mount API],
 and a lot of consternation in [trying to implement unmountat] with the same API.
-
-<!-- However, during this work we found that regular `mount` and `umount` -->
-<!-- can actually use relative file paths. -->
-<!-- Any insinuation that they couldn't stems from mistakes. -->
-<!-- So we [try to] combine this with `fchdir` to jump into the directories. -->
-<!-- The two sections above document the travails -->
-<!-- and hope to help you understand the new API better. -->
 
 The path to better mounting in `bb-remote-execution` is [tracked here].
 This series aims to document the details and a solution.
