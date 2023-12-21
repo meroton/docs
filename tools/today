@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# # Git-mv a blog post to today
+# like so: blog/2023-12-{10,14}-rebase-and-reformat-git-branches-automatically.md
+
+post=$1; shift
+leaf=$(basename "$post")
+leaf=$(echo "$leaf" | sed 's/^[0-9-]*//')
+stem=blog/$(date -I)
+new="$stem"-"$leaf"
+
+git mv "$post" "$new"
