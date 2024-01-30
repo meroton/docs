@@ -83,11 +83,11 @@ This opens the interactive rebase todo list with the `execute` commands filled i
 
 ```bash title=.git/rebase-merge/git-rebase-todo
 pick aaa My amazing feature
-x ./reformat.sh
+exec ./reformat.sh
 pick bbb Other complimentary work
-x ./reformat.sh
+exec ./reformat.sh
 pick ccc Fix annoying bug
-x ./reformat.sh
+exec ./reformat.sh
 
 # Rebase aaa..ccc onto deadbeef (3 commands)
 #
@@ -323,9 +323,9 @@ which will show the search-and-replacement that would be applied as you type!
 ```
 
 This just searches for the revert-fixup commits,
-which should be roughly every other commit.
-There may be some gaps,
-where the reformatting fixup did not contain any changes.
+to illustrate that the `:g` command can use the last search,
+this is useful when writing complex regular expressions
+and to check that they work.
 
 ```
 (vim) :g//normal! j0ces
