@@ -1,7 +1,9 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Debug Buildozer (and other rules_go projects)
+# Debug Bazel rules_go projects
+
+Case study: Buildozer
 
 The other day I needed to improve [`buildozer`] a little
 and naturally wanted to run `buildozer` in the [`dlv`] debugger.
