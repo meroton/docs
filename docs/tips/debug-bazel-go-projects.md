@@ -33,7 +33,7 @@ You can do the same for `gdb` and [`rr`] when building C/C++ code.
 [`rr`]: https://github.com/rr-debugger/rr
 [`buildozer`]: https://github.com/bazelbuild/buildtools/blob/master/buildozer/README.md
 [`dlv`]: https://github.com/go-delve/delve/
-[execroot trick]: /docs/tips/debug-buildozer-and-other-bazel-go-projects/#execroot-trick
+[execroot trick]: /docs/tips/debug-bazel-go-projects/#execroot-trick
 [substitute path technique]: https://github.com/bazelbuild/rules_go/issues/1708#issuecomment-791114337
 [rules_go]: https://github.com/bazelbuild/rules_go/
 
