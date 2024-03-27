@@ -62,7 +62,7 @@ This is because `Buildbarn` itself wraps the process with `/usr/bin/env`.
 
 [Here]: https://github.com/buildbarn/bb-remote-execution/blob/master/pkg/runner/local_runner_unix.go#L110
 [run_binary]: https://docs.aspect.build/rules/aspect_bazel_lib/docs/run_binary/
-[rules_go]: https://github.com/bazelbuild/rules_go/issues/1708
+[rules_go]: https://github.com/bazelbuild/rules_go/
 
 ## Build yourself an /usr/bin/env for fun and profit
 
