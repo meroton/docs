@@ -1,4 +1,15 @@
-# Reproducing the problem
+---
+title: VI Reproducing the Problem
+sidebar_position: 6
+---
+# Reproducing the Problem
+
+This document explains how to reproduce the problem and try the patches
+while they are improved and submitted.
+Once the pull requests are merged this will not be needed
+and will stand just as another interesting technical rabbit hole.
+
+## Problem statement and preliminaries
 
 The problem statement is simple:
 programs that use `/proc` cannot run in `chroot`.
@@ -51,6 +62,7 @@ This is because `Buildbarn` itself wraps the process with `/usr/bin/env`.
 
 [Here]: https://github.com/buildbarn/bb-remote-execution/blob/master/pkg/runner/local_runner_unix.go#L110
 [run_binary]: https://docs.aspect.build/rules/aspect_bazel_lib/docs/run_binary/
+[rules_go]: https://github.com/bazelbuild/rules_go/issues/1708
 
 ## Build yourself an /usr/bin/env for fun and profit
 
