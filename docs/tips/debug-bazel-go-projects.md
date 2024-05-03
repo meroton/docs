@@ -55,13 +55,19 @@ at an arbitrary location in the source tree.
 
 For the [buildtools] project we use the following substitute paths
 with the `<BUILDTOOLS>` placeholder for the repository path.
-`/bazel-buildtools` is the [convenience symlink] to the _execroot_,
+`bazel-buildtools` is the [convenience symlink] to the _execroot_,
 if you do not build them instead use `$(bazel info output_path)/..` to find the path.
 
+With WORKSPACE:
 ```
 (dlv) config substitute-path external/ <BUILDTOOLS>/bazel-buildtools/external
 (dlv) config substitute-path GOROOT/   <BUILDTOOLS>/bazel-buildtools/external/go-sdk
 (dlv) config substitute-path ""        <BUILDTOOLS>/bazel-buildtools/
+```
+
+With MODULE.bazel the go sdk has a qualified name: `rules_go~<VERSION>~go_sdk~go_default_sdk`
+```
+(dlv) config substitute-path GOROOT/   <BUILDTOOLS>/bazel-buildtools/external/rules_go~0.46.0~go_sdk~go_default_sdk
 ```
 
 ## Initialize delve with project-specific settings
