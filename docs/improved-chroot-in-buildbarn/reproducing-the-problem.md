@@ -181,7 +181,7 @@ Notice that we no longer use FUSE,
 but for our reproduction that is okay.
 In production use you [do want FUSE].
 
-[do want FUSE]: /docs/improved-chroot-in-Buildbarn/chroot-in-buildbarn/
+[do want FUSE]: /docs/improved-chroot-in-buildbarn/chroot-in-buildbarn/
 
 ### You can also use a local checkout and override the repository
 
@@ -212,7 +212,7 @@ Notice that we no longer use FUSE,
 but for our reproduction that is okay.
 In production use you [do want FUSE]
 
-[do want FUSE]: /docs/improved-chroot-in-Buildbarn/chroot-in-buildbarn/
+[do want FUSE]: /docs/improved-chroot-in-buildbarn/chroot-in-buildbarn/
 
 ### Successful build
 
