@@ -24,7 +24,7 @@ We have used [bb-deployments] as the development repo
 when diagnosing this problem and developing patches,
 it can be built successfully when the filesystems are mounted.
 
-[solve this]: /docs/improved-chroot-in-Buildbarn/implementing-mountat/
+[solve this]: /docs/improved-chroot-in-buildbarn/implementing-mountat/
 [`fuse` and `chroot` setup]: /docs/improved-chroot-in-buildbarn/chroot-in-buildbarn/
 
 ## Mounting the special filesystems in the worker?
@@ -74,10 +74,10 @@ and the `chroot` configuration is split between the worker and the runner,
 [Execute]: https://github.com/buildbarn/bb-remote-execution/blob/96c4fdce659fabfaba7ee2a60fd4e2ffab8352e2/pkg/builder/local_build_executor.go#L111
 [bb-deployments]: https://github.com/buildbarn/bb-deployments/
 [creates the special character devices]: https://github.com/buildbarn/bb-remote-execution/blob/96c4fdce659fabfaba7ee2a60fd4e2ffab8352e2/pkg/builder/local_build_executor.go#L185
-[implemented with the new Linux mount API]: /docs/improved-chroot-in-Buildbarn/implementing-mountat/
-[listed here]: /docs/improved-chroot-in-Buildbarn/integrating-mountat/
+[implemented with the new Linux mount API]: /docs/improved-chroot-in-buildbarn/implementing-mountat/
+[listed here]: /docs/improved-chroot-in-buildbarn/integrating-mountat/
 [local `Directory`]: https://github.com/buildbarn/bb-storage/blob/master/pkg/filesystem/directory.go
 [local build executor]: https://github.com/buildbarn/bb-remote-execution/blob/96c4fdce659fabfaba7ee2a60fd4e2ffab8352e2/pkg/builder/local_build_executor.go
-[this series]: /docs/improved-chroot-in-Buildbarn/implementing-mountat/
+[this series]: /docs/improved-chroot-in-buildbarn/implementing-mountat/
 [tracked here]: https://github.com/buildbarn/bb-remote-execution/issues/115
-[trying to implement unmountat]: /docs/improved-chroot-in-Buildbarn/implementing-unmountat/
+[trying to implement unmountat]: /docs/improved-chroot-in-buildbarn/implementing-unmountat/

@@ -9,8 +9,8 @@ This continues from [implementing mountat with the new Linux mount API]
 in an effort to improve [chroot in Buildbarn]
 and mount the `/proc` and `/sys` filesystem in the input root for `REAPI` _actions_.
 
-[implementing mountat with the new Linux mount API]: /docs/improved-chroot-in-Buildbarn/implementing-mountat/
-[chroot in Buildbarn]: /docs/improved-chroot-in-Buildbarn/
+[implementing mountat with the new Linux mount API]: /docs/improved-chroot-in-buildbarn/implementing-mountat/
+[chroot in Buildbarn]: /docs/improved-chroot-in-buildbarn/
 
 ## The new mount API
 
@@ -75,7 +75,7 @@ But that does not work either.
 So we use the third idea,
 which does not use the new API at all.
 
-[implementing mountat]: /docs/improved-chroot-in-Buildbarn/implementing-mountat/
+[implementing mountat]: /docs/improved-chroot-in-buildbarn/implementing-mountat/
 
 ## Move mount
 
