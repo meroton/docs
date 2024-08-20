@@ -2,6 +2,16 @@
 
 Meroton offers professional services helping you set up and maintain your build systems. Contact sales@meroton.com for any inquiries.
 
+## Buildbarn Fundamentals - Reference Cluster with Management Course
+
+Meroton offers a comprehensive package at a fixed price, which includes the
+setup of a fully functional and scalable Buildbarn reference cluster within your
+organization’s AWS subaccount. This package also features a full-day course
+designed to guide your cluster administrators through the components and
+management of the reference cluster.
+
+[Read more →](./buildbarn-fundamentals)
+
 ## Analysis of Build System, Migrations and Configuration
 
 Slow build systems are a nightmare for developers to work with. We will help you analyze your current build system, find bottle necks, and recommend actions to improve your build times as well as offer training on how to perform migrations and configurations of your build system and CI/CD flow.
