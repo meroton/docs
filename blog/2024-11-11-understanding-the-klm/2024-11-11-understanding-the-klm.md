@@ -11,19 +11,21 @@ proper care when sizing the KLM and the number of KLM attempts.
 
 # How big should the KLM be?
 
-If you are just looking for a ballpark number to get you started, set the
-number of get attempts to 16 and the number of put attempts to 64 and use the
-following table.
+If you are just looking for a ballpark number to get you started, set the number
+of get attempts to 16 and the number of put attempts to 64 and use the following
+table.
 
-|                     | CAS       | AC        |
-| ------------------- | --------- | --------- |
-| Average Object Size | 500KB     | 1KB       |
-| Storage Size        | 1TB       | 1GB       |
-| KLM Entries         | 8 000 000 | 4 000 000 |
-| KLM Size            | 528MB     | 264MB     |
+|                     | CAS        | AC        |
+| ------------------- | ---------- | --------- |
+| Average Object Size | 125KB      | 1KB       |
+| Storage Size        | 500TB      | 1GB       |
+| KLM Entries         | 16 000 000 | 4 000 000 |
+| KLM Size            | 1056MB     | 264MB     |
 
-I recommend reading the rest of the article to understand what you are actually
-setting and how to reason about this.
+These are arbitrarily chosen values which are unlikely to match your actual
+workload. I recommend reading the rest of the article to understand your
+settings and how to reason about this. You can then use the prometheus metrics
+in the end to validate if your settings are a good match for your workload.
 
 # How does the KLM work?
 
@@ -50,7 +52,10 @@ perform a similar solution, namely incrementing the number of attempts whenever
 we encounter a collision but taking care to insert the younger of the colliding
 objects in the colliding slot and pushing the older object forward.
 
-The number of attempts we allow the KLM to look for a free slot is described by the two parameters `key_location_map_maximum_get_attempts` and the `key_location_map_maximum_put_attempts` described by the [`LocalBlobAccessConfiguration`](https://github.com/buildbarn/bb-storage/blob/0941111f29e31905e4081e6262bccf0c123940ed/pkg/proto/configuration/blobstore/blobstore.proto#L429).
+The number of attempts we allow the KLM to look for a free slot is described by
+the two parameters `key_location_map_maximum_get_attempts` and the
+`key_location_map_maximum_put_attempts` described by the
+[`LocalBlobAccessConfiguration`](https://github.com/buildbarn/bb-storage/blob/0941111f29e31905e4081e6262bccf0c123940ed/pkg/proto/configuration/blobstore/blobstore.proto#L429).
 
 # So, how big should the KLM be?
 
@@ -70,13 +75,17 @@ occupied.
 
 Having a KLM that is too small for the number of iterations used is bad.
 
-This is somewhat mitigated by the insertion order where the oldest entries get pushed out first and therefore less likely to be relevant. This gives a graceful degradation for when your KLM is too small. You should choose a KLM so that the number of times you reach the maximum number of iterations is acceptably low.
+This is somewhat mitigated by the insertion order where the oldest entries get
+pushed out first, since they are less likely to be relevant. This gives a
+graceful degradation for when your KLM is too small. You should choose a KLM so
+that the number of times you reach the maximum number of iterations is
+acceptably low.
 
 # How rare should you keep the maximum nuber of iterations?
 
 It should be rare, but most objects that get discarded due to the KLM being full
-will tend to be old and unused. There is however a point where it is no
-longer meaningful to have a larger KLM.
+will tend to be old and unused. There is however a point where it is no longer
+meaningful to have a larger KLM.
 
 Ultimately, any time you read or write to a disk there is a risk of failure.
 Popularly this is described as happening due to cosmic radiation but more
@@ -93,12 +102,13 @@ advertises that their Gold enterprise NVME disks has an UBER rate of 1 in 10^17,
 i.e. about once per 10 petabytes of read data so will serve as a decent
 standard.
 
-For a random CAS object of 500KB this corresponds to 1 in 10^10, giving us this neat graph.
+For a random CAS object of 125KB this corresponds to a failure rate of about 1
+in 10^11 reads, giving us this neat graph.
 
 ![diagram](./failure_rate.svg)
 
-That is, for a KLM using the recommended 16 iterations giving it more than
-4 entries per object in the storage is a waste since you are just as likely to
+That is, for a KLM using the recommended 16 iterations giving it more than 5
+entries per object in the storage is a waste since you are just as likely to
 fail to read the object due to disk errors as due to the KLM accidentally
 pushing it out.
 
@@ -117,14 +127,19 @@ engineer tripping on a cable in the datacenter.
 
 # How do I verify if my KLMs are properly sized?
 
-Buildbarn exposes this in it's Prometheus metrics, the metrics:
-`hashing_key_location_map_get_attempts`,
-`hashing_key_location_map_get_too_many_attempts_total`,
-`hashing_key_location_map_put_iterations` and
-`hashing_key_location_map_put_too_many_iterations_total` are relevant here which
-will show you the trend of how many interations were required for each operation
-as well as keep track of the amount of times the algorithm failed with
-`too_many_iterations`.
+Buildbarn exposes the behavior of the hashing strategy in it's Prometheus
+metrics, they are exposed in the following metrics:
 
-You can find ready made Grafana dashboards which visualizes these metrics in in
+- `hashing_key_location_map_get_attempts`
+- `hashing_key_location_map_get_too_many_attempts_total`
+- `hashing_key_location_map_put_iterations`
+- `hashing_key_location_map_put_too_many_iterations_total`
+
+These metrics exposes the required number of get and put attempts respectively
+as well as how many times we exceeded the maximum number of iterations, you can
+read the ratio between how many iterations were required to figure out how full
+the klm is. I.e. if you perform half as many attempts with 2 iterations as with
+1 iteration this implies the klm is half full.
+
+There are ready made Grafana dashboards which visualizes these metrics in in
 [bb-deployments](https://github.com/buildbarn/bb-deployments).
