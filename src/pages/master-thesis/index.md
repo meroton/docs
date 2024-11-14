@@ -31,3 +31,8 @@ analysis using languages of your choice.
 
 * Required: Linux programming skills.
 * Preferred: Golang knowledge.
+
+### Contact
+
+Fredrik Medley &lt;fredrik@meroton.com&gt;\
+Telephone: +46730739188.
