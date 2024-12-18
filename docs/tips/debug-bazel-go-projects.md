@@ -164,6 +164,16 @@ end | psub ) $BUILDOZER -- -h
 
 ## Execroot trick
 
+:::info
+Alternative title: Execroot trap
+
+Hedron Vision notes a flaw with this technique for long-lived access to files,
+with go-to-definition in the IDE being a great such use-case,
+the Execroot is regenerated for new builds, and only contains the files needed for that build.
+See https://github.com/hedronvision/bazel-compile-commands-extractor/blob/main/ImplementationReadme.md#compilation-working-directory-and-the-external-link
+for how they access generated source files with a symlink of `external` itself.
+:::
+
 If the execution directory of the program does not matter
 you can execute it directly from the _execroot_,
 where all source files are available as they were during compilation in the sandbox.
