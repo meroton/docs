@@ -8,16 +8,18 @@ tags: [buildbarn, bazel]
 # Bazel, Buildbarn and Bonanza
 
 In the Buildbarn event at Snowflake this week, Ed Schouten presented the work on
-the Bonanza project. Bonanza is a prototype for a drop in replacement Bazel with
-improvements to its communication protocols and written as client that performs
+the [Bonanza project]. Bonanza is a prototype for a drop in replacement Bazel with
+improvements to its communication protocols and written as a client that performs
 all of its actions remotely, deduplicated and cacheable.
+
+[bonanza project]: https://github.com/buildbarn/bonanza
 
 # How is it different from Bazel?
 
 Bazel is written in an interesting manner. It is designed from the ground up to
 represent a stable description of a build that is reproducible from any
 developer's machine. Any developer can check out the same source code ask Bazel
-to analyze it and get the exact commands which Bazel would run to perform the
+to analyze it and get the exact commands Bazel would run to perform the
 build.
 
 This involves a lot of computation: Resolving bazel modules, downloading
@@ -30,7 +32,7 @@ returning `SkyValues` from `SkyKeys`.
 
 A `SkyFunction` should return the same `SkyValue` given the same `SkyKey` which
 makes it a good candidate for being computed only once and have the result
-cached and fed throught to the next step. But peculiarly only the action
+cached and fed through to the next step. But peculiarly only the action
 execution itself has been offloaded to remote cache and execution.
 
 <!-- truncate -->
@@ -57,7 +59,7 @@ resolution, fetching all relevant repository rules from upstream, run those
 repository rules, and analyzing the resulting codebase, basically performing
 everything a Bazel `cquery` does, all with fully remote and cacheable manner.
 
-For shops which lean heavily into remote caching and execution the remaining
+For shops which lean heavily on remote caching and execution the remaining
 local load is often the bottleneck for your builds, the ability to offload the
 remaining pieces to your build cluster may be the next evolution of your build
 system.
