@@ -132,15 +132,15 @@ const config = {
             ],
           },
           {
-            title: "Hosted build system",
+            title: "Buildbarn Environments",
             items: [
               {
-                label: "Self hosted",
-                to: "/services/self-hosted",
+                label: "Managed Buildbarn",
+                to: "/services/managed-buildbarn",
               },
               {
-                label: "Cloud based",
-                to: "/services/cloud-environment",
+                label: "Supported Build Environment",
+                to: "/services/supported-build-environment",
               },
             ],
           },
