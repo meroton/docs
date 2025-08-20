@@ -18,19 +18,26 @@ Slow build systems are a nightmare for developers to work with. We will help you
 
 Have you decided to go for [Bazel](https://bazel.build/)? We can help you with the porting effort with our years of experience.
 
-## Cloud Based Remote Execution and Caching Environment
+## Managed Buildbarn
 
-Managing your own physical hardware and scaling it up when demand rises is a tedious task. By leveraging the power of the cloud you can have a scaleable system no matter how large your workload is. Meroton offers [Buildbarn](https://github.com/buildbarn/bb-deployments) in a fully hosted cloud environment where you can focus on writing your code while we handle the system.
+Managing your own Buildbarn environment correctly and performantly is a
+difficult task. At Meroton we offer to fully manage a
+[Buildbarn](https://github.com/buildbarn/bb-deployments) no matter what
+the size of the environment. Allowing you to focus on writing your code
+while we handle the system.
 
-The environment is pay as you use so it allows you to have the advantages of a very large build cluster without having to invest in a large data center.
+The environment may be placed on prem or in the cloud, we will optimize
+it to keep it running as efficiently as possible while keeping
 
-[Read more →](./cloud-environment)
+[Read more →](./managed-buildbarn)
 
-## Self-Hosted Remote Execution and Caching Environment
+## Supported Build Environment
 
-If your business case requires you to manage your own server cluster, a self-hosted environment will still allow you to have the advantages of a remote execution environment. Meroton will help you set up [Buildbarn](https://github.com/buildbarn/bb-deployments) and offer software maintenance keeping the system running smoothly.
+If your business case requires you to manage your own cluster Meroton is
+available to support you with expert resources to help you maintain your
+own system.
 
-[Read more →](./self-hosted)
+[Read more →](./supported-build-environment)
 
 ## Patching Bazel and Buildbarn
 
