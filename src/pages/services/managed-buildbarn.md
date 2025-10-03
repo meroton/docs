@@ -16,7 +16,6 @@ environment](../supported-build-environment).
 
 The base offering of the fully managed environment is an AWS sub account
 which you own. We charge for the management of the environment no matter
-how large your load grows. This keeps our incentives aligned and allows
-us to
+how large your load grows.
 
 Please contact sales@meroton.com for any inquiries.
