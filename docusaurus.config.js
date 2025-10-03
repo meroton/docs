@@ -128,6 +128,7 @@ const config = {
               { label: "Services", to: "/services" },
               { label: "Contact", to: "/contact" },
               { label: "Sign up", href: "https://forms.gle/wchwDu6roWg6A7U29" },
+              { label: "Jobs", href: "/jobs" },
               { label: "Master Thesis", to: "/master-thesis" },
             ],
           },
