@@ -195,7 +195,7 @@ pick cc2 Revert "fixup! Fix annoying bug"
 Which is modified with the following search-and-replace in `vim`:
 
 ```
-:g/^\w* \w* fixup!/s/^pick/fixup/
+:g/^\w* \w* \(# \)\?fixup!/s/^pick/fixup/
 ^                                 : command
  ^                                : for all lines
   ^               ^               : that match
@@ -362,7 +362,7 @@ then remove all comment lines
 and finally delete the two last lines (a blank line and the final commit).
 
 ```
-:g/^pick \w* Revert "fixup!/normal! j0ces
+:g/^pick \w* \(# \)\?Revert "fixup!/normal! j0ces
 :g/^#/d'
 Gdk
 ```
@@ -561,14 +561,14 @@ $ env                          \
 Second wave:
 ```
 $ env                                                             \
-    GIT_SEQUENCE_EDITOR="vim +'g/^\w* \w* fixup!/s/^pick/fixup/'" \
+    GIT_SEQUENCE_EDITOR="vim +'g/^\w* \w* \(# \)\?fixup!/s/^pick/fixup/'" \
     git rebase -i origin/main
 ```
 Third wave:
 ```
 $ env                                                                                               \
     EDITOR="sed -i '1,9d'"                                                                          \
-    GIT_SEQUENCE_EDITOR="vim +'g/^#/d' +'normal! Gdk' +'g/^pick \w* Revert \"fixup!/normal! j0ces'" \
+    GIT_SEQUENCE_EDITOR="vim +'g/^#/d' +'normal! Gdk' +'g/^pick \w* \(# \)\?Revert \"fixup!/normal! j0ces'" \
     git rebase -i origin/main
 #                            ^         ^              ^ : multiple commands
 #                              ^^^^^^                   : remove all comments lines
