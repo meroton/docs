@@ -13,7 +13,7 @@ development teams. Working as a developer for other developers having an underst
 
 We typically work in golang and react with typescript.
 
-Salary after experience, typical range of 50.000€ to 100.000€ anually.
+Salary after experience, typical range of 40.000€ to 100.000€ annually.
 
 ## IT infrastructure engineer
 
@@ -30,7 +30,7 @@ Typical skills we look for are:
 - Experience working with cloud environment
 - Experience setting up rack mounted hardware
 
-Salary after experience, typical range of 50.000€ to 100.000€ anually.
+Salary after experience, typical range of 40.000€ to 100.000€ annually.
 
 ## Build your own role
 
