@@ -22,43 +22,63 @@ The example configuration for [bb-deployments](https://github.com/buildbarn/bb-d
   <!-- - `GITSHA1` -->
 <!-- * Generic gRPC stream forwarding -->
 
+# `bb-storage`
+
+## OAuth Client credentials for HTTP clients
+
+Buildbarns HTTP client now supports OAuth Client Credential flow.
+
+## PKCE support in OIDC authenticator
+
+The OIDC authenticator now supports PKCE.
+
+## Merge ServerCapabilities version numbers
+
+Buildbarn components now adds any provided versions to their ServerCapabilities.
+
+## gRPC Authentication
+
+The gRPC server component now supports basic ATLS.
+
+## Remove support for legacy sharding
+
+A legacy version of the sharding implementation has been removed. It was previously kept available for migration purposes.
+
+## Generic stream forwarding
+
+A Buildbarn frontend can now be configured to forward gRPC streams.
+
+## Support for hashing algorithm GITSHA1
+
+Two hashing algorithms has been added Buildbarns digest component: [blake3](https://github.com/buildbarn/bb-storage/pull/307) and [GITSHA1](https://github.com/buildbarn/bb-storage/pull/308).
+
+## Support bytes and unsigned integer attributes for for gRPC OTEL (?)
+
+## Upgrade to Bazel 9
+
 ## Relaunch Buildbarn processes with PID 1
 
 Buildbarn binaries will now relaunch themselves in a child process, if the PID is 1.
 This removes the need to run bb-runner through `tini` as zombie processes in containers
 no longer is an issue.
 
+## ZSTD compression controls
+
+An option has been added to wrap the existing blobstore CAS gRPC client with ZSTD compression support for ByteStream operations, required for supporting compressed bb-clientd.
+
+## ZSTD encoder/decoder pool
+
+bb-storage now supports running several a pool of encoders and decoders. The pool can have an upper limit of instances, which are synced and recycled.
+
+---
+
 ## Add support for execution timeout compensation via HTTP
 
-bb-worker can now be configured to allow control of the execution timeout timer via HTTP. It is configured by specifying two URLs which are called by the worker: `suspend_url`, whose response controls whether the timeout timer is suspended, and `resume_url` whose response controls whether to resume the timer.
-
-## ZStandard compression controls
-
-bb-storage can now use zstd for compressing 
+bb-worker can now be configured to allow control of the execution timeout timer via HTTP. It is configured by specifying two URLs which are called by the worker: `suspend_url`, whose response controls whether the timeout timer is suspended, and `resume_url` whose response controls whether to resume the timer. 
 
 ## Remote Action Router
 
-## Remove support for legacy sharding
-
-A legacy version of the sharding implementation has been removed. It was previously kept available for migration purposes.
-
 ## Remote Execution: Add chunking algorithm
-
-## HTTP Authentication
-
-Buildbarns HTTP client now supports OAuth Client Credential flow, and PKCE has been added as an option to the OIDC authenticator.
-
-## gRPC Authentication
-
-The gRPC server component now supports basic ATLS.
-
-## Support for additional hashing algorithms
-
-Two hashing algorithms has been added Buildbarns digest component: [blake3](https://github.com/buildbarn/bb-storage/pull/307) and [GITSHA1](https://github.com/buildbarn/bb-storage/pull/308).
-
-## Generic stream forwarding
-
-A Buildbarn frontend can now be configured to forward gRPC streams.
 
 <!-- ## `bazel-remote-apis`
 
