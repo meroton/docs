@@ -40,7 +40,7 @@ bb-storage can now use zstd for compressing
 
 ## Remove support for legacy sharding
 
-A previous version of the sharding implementation was kept available for migration purposes, but it is now removed.
+A legacy version of the sharding implementation has been removed. It was previously kept available for migration purposes.
 
 ## Remote Execution: Add chunking algorithm
 
@@ -128,4 +128,4 @@ A Buildbarn frontend can now be configured to forward gRPC streams.
 * `742fac709e76152cb989ab3fc906913b4e6c8f7d`: Windows Docker image publishing
 * `f62d21c785f14e47af523673ed2827206b3d5161`: ZStd compression, allows disabling/enabling zstd compression for storage backend
 * `f48c18e95728c9274d06d52d9c41120fd9e34b48`: ZStd compression, additional configuration options
-* `bbf587e8a88cfc6b4e47ae0926939fcd47a66e8b`: Remote `rules_proto` dep
+* `bbf587e8a88cfc6b4e47ae0926939fcd47a66e8b`: Remote `rules_proto` dep -->
