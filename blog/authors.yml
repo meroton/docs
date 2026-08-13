@@ -13,3 +13,7 @@ fredrik:
 nils:
   name: Nils Wireklint
   image_url: /img/nils-avatar.jpg
+
+oscar:
+  name: Oscar Falk
+  image_url: /img/oscar-avatar.png
