@@ -24,12 +24,12 @@ The Buildbarn components have been upgraded to use Bazel 9.
 ### [Remove `tini` (Jan 29, 2026)](https://github.com/buildbarn/bb-storage/commit/d2a3a16763ee8a62125d9c57b7a12bf5d9ae0789)
 
 Buildbarn binaries will now relaunch themselves in a child process, if the PID is 1.
-This removes the need to run bb_runner through `tini` as zombie processes in containers
+This removes the need to run bb_runner through `tini` because zombie processes in containers
 are no longer an issue.
 
 ### [Generic gRPC stream forwarding (Jan 19, 2026)](https://github.com/buildbarn/bb-storage/commit/5b5db75d620841b08c02f04f817652d4ebc949ce)
 
-gRPC servers can now forward incoming streams of specified
+The gRPC servers can now forward incoming streams of specified
 services. This enables passing Bazel's build event stream
 to the same DNS name, without having to add an extra L7
 router in front of the bb_storage frontend.
@@ -90,7 +90,7 @@ addMetadataJmespathExpression: {
 
 ### ZSTD compression
 
-Adds support for [in-transit ZSTD compression in the gRPC ByteStream layer](https://github.com/buildbarn/bb-storage/commit/da77bb647e8fd10666c3da6e8d3133e4bdba2a30) (Jul 15, 2025),
+Support has been added for [in-transit ZSTD compression in the gRPC ByteStream layer](https://github.com/buildbarn/bb-storage/commit/da77bb647e8fd10666c3da6e8d3133e4bdba2a30) (Jul 15, 2025),
 used by the CAS. This feature is a pre-requisite for supporting compressed
 bb_clientd. [A pool of decoders and encoders can be configured with an optional
 upper bound of instances](https://github.com/buildbarn/bb-storage/commit/f48c18e95728c9274d06d52d9c41120fd9e34b48) (Mar 12, 2026).
@@ -104,13 +104,13 @@ See [Buildbarn ADR #11](https://github.com/buildbarn/bb-adrs/blob/bf2066633e1712
 
 ### [Remote authentication and authorization (Feb 20, 2025)](https://github.com/buildbarn/bb-storage/commit/214cfae17630f655e9b26582f5361fa3ca102e06)
 
-gRPC and HTTP servers can now forward authentication and authorization
+HTTP and gRPC servers can now forward authentication and authorization
 requests to a remote service. The results are cached for a short while to
 reduce the load on the remote service.
 
 ### NFSv4 changes
 
-[bb_worker now supports NFSv4.1](https://github.com/buildbarn/bb-remote-execution/commit/3a086e580afeae34a9c62bfa8b06dc88f2d79a03) (Jul 9, 2024)
+[NFSv4.1 for bb_worker is now supported](https://github.com/buildbarn/bb-remote-execution/commit/3a086e580afeae34a9c62bfa8b06dc88f2d79a03) (Jul 9, 2024)
 in addition to NFSv4.0. The versions have some substantial protocol
 differences, as described in the commit message.
 
@@ -189,9 +189,11 @@ as documented in the [worker Proto file](https://github.com/buildbarn/bb-remote-
 
 ## Minor changes
 
-### blake3 and GITSHA1 digest algorithm support
+### Extended digest algorithm support
 
-[blake3](https://github.com/buildbarn/bb-storage/commit/14e58f4631ad20fff197b2f4a8e36a6cdca92379) (Dec 31, 2025) and [GITSHA1](https://github.com/buildbarn/bb-storage/commit/797be97c5d2c216dafb4c4345e24003952c71561) (Jan 27, 2026) have been added to the list of digest algorithms.
+The list of supported digest algorithms has been extended with
+[blake3](https://github.com/buildbarn/bb-storage/commit/14e58f4631ad20fff197b2f4a8e36a6cdca92379) (Dec 31, 2025)
+and [GITSHA1](https://github.com/buildbarn/bb-storage/commit/797be97c5d2c216dafb4c4345e24003952c71561) (Jan 27, 2026)
 
 ### [Remote Action Router (Dec 8, 2025)](https://github.com/buildbarn/bb-remote-execution/commit/babfe8f73772adb40306ee23546d3f827d120998)
 
@@ -210,8 +212,8 @@ of the user info endpoint.
 
 ### [Add support for execution timeout compensation via HTTP (Oct 31, 2025)](https://github.com/buildbarn/bb-remote-execution/commit/44156572da4cef72713cfcc2f1a80f3979ae427c)
 
-bb_worker can now be configured to allow control of the execution
-timeout timer via HTTP. It is configured by specifying two URLs
+A configuration option has been added which allows bb_worker
+to control of the execution timeout timer via HTTP. It is configured by specifying two URLs
 which are polled by the worker: a "suspend URL", whose response
 controls whether the timeout timer is suspended, and a "resume URL"
 whose response controls whether to resume the timer.
@@ -222,15 +224,16 @@ compensated for file downloads from outside the input root.
 
 Buildbarn now includes simple program which saves JWKSes in a Kubernetes ConfigMap,
 which can then be made available to Buildbarn with a volume mount.
-The program is meant to be ran periodically in the cluster.
+The program is meant to be run periodically in the cluster.
 
-### [bb_worker synchronize request authorization (Jul 27, 2025)](https://github.com/buildbarn/bb-remote-execution/commit/58b88e8adfbd4cb5c32905383ef9c35ea1f9598e)
+### [Synchronize request authorization (Jul 27, 2025)](https://github.com/buildbarn/bb-remote-execution/commit/58b88e8adfbd4cb5c32905383ef9c35ea1f9598e)
 
-Adds an authorizer in the scheduler configuration, used to authorize bb_worker synchronize requests.
+The scheduler can now be configured with an additional authorizer, to authorize
+bb_worker synchronize requests.
 
 ### [Add the ability to set owner user/group IDs on directories (Jun 11, 2025)](https://github.com/buildbarn/bb-remote-execution/commit/81753944a0d407a8f053bc65edf97cdfc6051831)
 
-Extends the VFS and the FUSE backend to support setting directory ownership.
+VFS and FUSE backends now support setting directory ownership.
 This is useful for when running repo rules as remote actions, as
 [Bonanza](https://github.com/buildbarn/bonanza) will, many of which
 depend on having ownership.
@@ -244,8 +247,8 @@ that are taking an excessive amouint of time to complete.
 
 ### [Enable custom gRPC connection load balancing method (Jan 23, 2025)](https://github.com/buildbarn/bb-storage/commit/7ebb551ce5caf414481a48dad248e79f29a48719)
 
-Allows the user to set the default gRPC connection
-load balancing policy. This enables using the round-robin strategy.
+The default gRPC connection load balancing policy
+is now configurable. This enables using the round-robin strategy.
 See [gRPC service configuration](https://grpc.io/docs/guides/service-config/)
 for more information.
 
@@ -263,7 +266,7 @@ for example in a bare metal environment.
 
 ### [Allow TLS certificate authenticator to validate URI SANs (Apr 10, 2024)](https://github.com/buildbarn/bb-storage/commit/a9d0937955fc44f23434b450608c9ebc8405ab05)
 
-Allows URI subject alternative names to be matched with JMESPath expressions
+URI subject alternatives names can now be matched with JMESPath expressions
 when validating TLS certificates.
 
 ### [Custom Kubernetes service endpoint connections (Feb 27, 2024)](https://github.com/buildbarn/bb-storage/commit/a4267fc3c5c3a916004c5021fb13bc2bcf214e05)
@@ -277,16 +280,15 @@ network connections between components.
 
 ### [Delay file uploads until output files are closed (Feb 22, 2024)](https://github.com/buildbarn/bb-remote-execution/commit/aee4508a844d890d51d905e7b331642ea57d004d)
 
-bb_worker will now wait for the output files to be closed
-before uploading them, with a user-specified upper bound
-for the duration. This prevents cases where the output
-files are still open for writing when they are
-uploaded, due to the kernel closing files asynchronously.
+Before uploading the output files, bb_worker will now wait for them to be closed,
+with a user-specified upper bound for the waiting duration.
+This prevents cases where the output files are still open for
+writing when they are uploaded, due to the kernel closing files asynchronously.
 
 ### [Add support for capturing server logs (Jan 26, 2024)](https://github.com/buildbarn/bb-remote-execution/commit/fe4cf5d42613d9b44be4ef969353fb1212222c73)
 
-Extends bb_worker to give every action its own "server_logs"
-directory. bb_runner doesn't do anything with the directory,
+Every action now gets its own "server_logs" directory, created by
+bb_worker. bb_runner doesn't do anything with the directory,
 but a custom runner can for example use the directory to store core dumps
 of failed actions, which bb_worker will then include in the upload.
 For more information on how to configure the directory, see the
