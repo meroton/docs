@@ -266,7 +266,7 @@ for example in a bare metal environment.
 
 ### [Allow TLS certificate authenticator to validate URI SANs (Apr 10, 2024)](https://github.com/buildbarn/bb-storage/commit/a9d0937955fc44f23434b450608c9ebc8405ab05)
 
-URI subject alternatives names can now be matched with JMESPath expressions
+URI subject alternative names can now be matched with JMESPath expressions
 when validating TLS certificates.
 
 ### [Custom Kubernetes service endpoint connections (Feb 27, 2024)](https://github.com/buildbarn/bb-storage/commit/a4267fc3c5c3a916004c5021fb13bc2bcf214e05)
