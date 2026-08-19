@@ -18,7 +18,7 @@ table.
 |                     | CAS        | AC        |
 | ------------------- | ---------- | --------- |
 | Average Object Size | 125KB      | 1KB       |
-| Storage Size        | 500TB      | 1GB       |
+| Storage Size        | 500GB      | 1GB       |
 | KLM Entries         | 16 000 000 | 4 000 000 |
 | KLM Size            | 1056MB     | 264MB     |
 
@@ -81,7 +81,7 @@ graceful degradation for when your KLM is too small. You should choose a KLM so
 that the number of times you reach the maximum number of iterations is
 acceptably low.
 
-# How rare should you keep the maximum nuber of iterations?
+# How rare should you keep the maximum number of iterations?
 
 It should be rare, but most objects that get discarded due to the KLM being full
 will tend to be old and unused. There is however a point where it is no longer
