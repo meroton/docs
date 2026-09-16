@@ -26,18 +26,19 @@ tests, and targets; the storage daemon shares information
 about objects in the Action Cache (AC) and Content Addressable Storage (CAS);
 the scheduler shares information about workers and execution status.
 
-An example setup in of Buildbarn with the portal can be found in [bb-deployments](https://github.com/buildbarn/bb-deployments/):
+An example setup of Buildbarn with the portal can be found in [bb-deployments](https://github.com/buildbarn/bb-deployments/):
 
 ![bb-deployments-example](./bb-deployments-example.jpg)
 
 Much like other Buildbarn components, the portal's endpoints and services
 can be protected by configuring authentication policies and authorizers.
-The portal uses instances names to determine access.
+The portal uses instance names to determine access.
 
 ## Build event processing
 
-BEP event data are processed and stored in the portal's database.
-The events can be published to the portal in two ways: either from an uploaded file,
+BEP event data is processed and stored in the portal's database.
+The events can be published to the portal in two ways: either from an uploaded file
+created by Bazel using the `--build_event_json_file` flag,
 or as a stream from Bazel with its [Build Event Service](https://bazel.build/remote/bep#build-event-service)
 (BES) protocol, which essentially consists of gRPC encoded BEP events.
 
@@ -46,37 +47,33 @@ or as a stream from Bazel with its [Build Event Service](https://bazel.build/rem
 An invocation contains information relating to a single Bazel
 command, such as `run`, `build`, or `test`. 
 
-***TODO: Remove corresponding tab in image if Completed Actions Log is excluded***
-
 ![invocations-table](./invocations-table.png)
 
-The portal stores invocation data such as the command log, targets,
+The portal stores invocation data such as the command line, logs, targets,
 action cache and timing metrics, and more. If authentication is
 configured for the BES service, the user responsible for the invocation
 can be saved to the database and will then be linked to the invocation.
-
-***TODO: Remove corresponding tab in image if Completed Actions Log is excluded***
 
 ![invocation-details](./invocation-details.png)
 
 An invocation can be associated with metadata extracted from the machine
 running the Bazel command. This is useful when running
 Bazel on a CI runner, as the invocation can be associated with information
-pertaining to what triggered the invocation.
+pertaining to what triggered it.
 
 The metadata extraction is configurable to suit different CI systems.
 Such a configuration specifies a list of fields and how they should be set,
 often retrieved from the machine's environment variables. These fields are referred to as "tags".
 For example, in the Github Actions configuration included in the BB Portal
 repository, tags for pull request, workflow, job, and action are configured,
-shown below. The repository also includes example configurations for Gitlab
+shown below. The repository also includes example configurations for Gitlab CI/CD
 and Semaphore.
 
 ![invocation-tags](./invocation-tags.png)
 
 ### Builds
 
-A BB Portal build is a collection of invocations, grouped my tags.
+A BB Portal build is a collection of invocations, grouped by tags.
 Similarly to invocations, tag extractions are configurable.
 Below is an example view of the builds table using the Github
 Actions example configuration, defining tags for repository,
@@ -125,7 +122,7 @@ and the ability to compare two actions:
 ## BB Scheduler web UI integration
 
 The BB Scheduler web UI is integrated into the portal
-with full feature parity.
+with close to full feature parity.
 
 ![scheduler-overview](./scheduler-overview.png)
 
@@ -148,18 +145,6 @@ event handling traffic.
 ### Tracing
 
 The portal can be configured to expose an OpenTelemetry OTLP
-endpoint, enabling tracing which can be consumed by for example Jaeger.
+endpoint, enabling tracing that can be consumed by tools like Jaeger.
 The traces grant insight into the database and the portal's HTTP
 servers.
-
-### Completed actions logger
-
-(***TODO: This feature does not have a PR upstream yet, might not be included***)
-
-The portal has an endpoint for Completed Action Logger.
-This service allow Buildbarn workers to stream details
-of completed actions to the portal, which links Bazel
-actions with invocations. See [ADR #6](https://github.com/buildbarn/bb-adrs/blob/main/0006-operation-logging-and-monetary-resource-usage.md)
-for more information.
-
-![completed-actions-viewer](completed-actions-viewer.png)
