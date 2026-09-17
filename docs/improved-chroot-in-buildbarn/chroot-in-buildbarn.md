@@ -30,7 +30,9 @@ The well-known family of `/dev/null`, `/dev/random`, and so on.
 They are not technically _mounted_, but created through `mknodat`.
 
 Runner.jsonnet [runner proto documentation]:
+
 [runner proto documentation]: https://github.com/buildbarn/bb-remote-execution/blob/96c4fdce659fabfaba7ee2a60fd4e2ffab8352e2/pkg/proto/configuration/bb_runner/bb_runner.proto#L39
+
 ```js
 {
   chrootIntoInputRoot: true,
@@ -39,7 +41,9 @@ Runner.jsonnet [runner proto documentation]:
 ```
 
 Worker.jsonnet [worker proto documentation]:
+
 [worker proto documentation]: https://github.com/buildbarn/bb-remote-execution/blob/96c4fdce659fabfaba7ee2a60fd4e2ffab8352e2/pkg/proto/configuration/bb_worker/bb_worker.proto#L258
+
 ```js
 {
   ...

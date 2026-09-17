@@ -9,8 +9,8 @@ This continues from [implementing mountat with the new Linux mount API]
 in an effort to improve [chroot in Buildbarn]
 and mount the `/proc` and `/sys` filesystem in the input root for `REAPI` _actions_.
 
-[implementing mountat with the new Linux mount API]: /docs/improved-chroot-in-Buildbarn/implementing-mountat/
-[chroot in Buildbarn]: /docs/improved-chroot-in-Buildbarn/
+[implementing mountat with the new Linux mount API]: /docs/improved-chroot-in-buildbarn/implementing-mountat/
+[chroot in Buildbarn]: /docs/improved-chroot-in-buildbarn/
 
 ## The new mount API
 
@@ -58,11 +58,11 @@ Quote the manpages:
 This is where we start to implement "unmountat",
 the idea is to
 
-    A1: pick up the mount from the directory
+    A1: pick up the mount from the directory  
     A2: delete the mount
 
-    B1: pick up the mount from the directory
-    B2: move it somewhere else
+    B1: pick up the mount from the directory  
+    B2: move it somewhere else  
     B3: unmount it from there
 
     C1: emulate `umountat` with `fchdir` + `umount`
@@ -75,7 +75,7 @@ But that does not work either.
 So we use the third idea,
 which does not use the new API at all.
 
-[implementing mountat]: /docs/improved-chroot-in-Buildbarn/implementing-mountat/
+[implementing mountat]: /docs/improved-chroot-in-buildbarn/implementing-mountat/
 
 ## Move mount
 

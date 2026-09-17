@@ -1,8 +1,7 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require("prism-react-renderer/themes/github");
-const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+import { themes } from "prism-react-renderer";
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -129,18 +128,20 @@ const config = {
               { label: "Services", to: "/services" },
               { label: "Contact", to: "/contact" },
               { label: "Sign up", href: "https://forms.gle/wchwDu6roWg6A7U29" },
+              { label: "Jobs", href: "/jobs" },
+              { label: "Master Thesis", to: "/master-thesis" },
             ],
           },
           {
-            title: "Hosted build system",
+            title: "Buildbarn Environments",
             items: [
               {
-                label: "Self hosted",
-                to: "/services/self-hosted",
+                label: "Managed Buildbarn",
+                to: "/services/managed-buildbarn",
               },
               {
-                label: "Cloud based",
-                to: "/services/cloud-environment",
+                label: "Supported Build Environment",
+                to: "/services/supported-build-environment",
               },
             ],
           },
@@ -169,8 +170,8 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Meroton AB`,
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: themes.github,
+        darkTheme: themes.dracula,
       },
     }),
 };

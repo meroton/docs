@@ -2,9 +2,13 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[typescript]": {
-    "editor.codeActionsOnSave": { "source.organizeImports": true }
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
   },
   "[typescriptreact]": {
-    "editor.codeActionsOnSave": { "source.organizeImports": true }
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
   }
 }

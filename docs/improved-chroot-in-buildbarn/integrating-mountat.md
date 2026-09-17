@@ -81,9 +81,9 @@ This is written in `go`, just like [Buildbarn].
 
 We will not pursue adding this to Buildbarn.
 
-[implementing mountat]: /docs/improved-chroot-in-Buildbarn/implementing-mountat/
+[implementing mountat]: /docs/improved-chroot-in-buildbarn/implementing-mountat/
 [in golang]: https://github.com/meroton/prototype-mountat/blob/main/cmd/mountat/main.go#L231
-[is not implemented]: /docs/improved-chroot-in-Buildbarn/implementing-unmountat/
+[is not implemented]: /docs/improved-chroot-in-buildbarn/implementing-unmountat/
 
 ## Third attempt: with relative-path unmount
 
