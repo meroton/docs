@@ -134,7 +134,7 @@ and interactions.
 
 The portal can provide a diagnostics endpoint for Prometheus.
 Some of the metrics include the total number of invocations,
-number of authenticated users, and size and duration of the BEP
+number of authenticated users, and the size and duration of the BEP
 event handling traffic.
 
 ### Tracing
