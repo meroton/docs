@@ -88,8 +88,6 @@ table and timeline.
 
 ### Targets and tests
 
-***TODO: This section feels a bit weak, but I'm not sure if there's much else to say.***
-
 All targets are shown in the targets overview, each with a drop-down
 list of its recent invocation results.
 
@@ -109,15 +107,10 @@ BB Browser has been integrated into the portal, meaning
 objects in the AC and CAS can be fetched and displayed.
 The portal has almost full feature parity.
 
-Two new features include an inline input file tree display:
+A new feature allows the input files to be displayed as an
+inline tree:
 
 ![input-file-tree](./input-file-tree.png)
-
-and the ability to compare two actions:
-
-(***TODO: This feature is not merged upstream yet***)
-
-![compare-actions-view](./compare-actions-view.png)
 
 ## BB Scheduler web UI integration
 
@@ -130,7 +123,7 @@ with close to full feature parity.
 
 ![operation-details](./operation-details.png)
 
-## Additional services
+## Additional services for cluster operators
 
 The BB Portal backend provides additional services
 and interactions.
@@ -139,12 +132,12 @@ and interactions.
 
 The portal can provide a diagnostics endpoint for Prometheus.
 Some of the metrics include the total number of invocations,
-number of authenticated users, and size/duration of the BEP
+number of authenticated users, and size and duration of the BEP
 event handling traffic.
 
 ### Tracing
 
 The portal can be configured to expose an OpenTelemetry OTLP
 endpoint, enabling tracing that can be consumed by tools like Jaeger.
-The traces grant insight into the database and the portal's HTTP
-servers.
+The traces grant insight into the database queries and the portal's HTTP
+servers, making it possible to debug bottlenecks.
