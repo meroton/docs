@@ -7,6 +7,8 @@ tags: [release, buildbarn, bb-portal]
 
 # BB Portal
 
+***TODO: Update date when the post is ready to be published.***
+
 Since early 2025 we have been hard at work contributing to the [BB Portal project](https://github.com/buildbarn/bb-portal),
 a web interface which grants insight into Bazel builds and Buildbarn clusters.
 This blog post will showcase the portal and some of its features.
