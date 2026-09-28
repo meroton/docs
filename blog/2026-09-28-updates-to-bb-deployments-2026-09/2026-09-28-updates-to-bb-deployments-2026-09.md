@@ -5,14 +5,11 @@ authors: oscar
 tags: [release, buildbarn]
 ---
 
-The example configuration for
-[bb-deployments](https://github.com/buildbarn/bb-deployments/) has been updated.
-
-This update will explain some of the changes since since our [last update
-summary](/blog/bb-deployments-updates-2026-06), covering what has happened since
-June 2026.
-
-Additional changes can be found in the [bb-deployments
+This article explains the updates to the
+[bb-deployments](https://github.com/buildbarn/bb-deployments/) example
+configuration of Buildbarn since our [last update
+summary](/blog/bb-deployments-updates-2026-06) in June 2026. Additional details
+can be found in the [bb-deployments
 changelog](https://github.com/buildbarn/bb-deployments/blob/d4a6ca38e5f77959b42fccaa34a3320253683bc2/changelog.md#2026-09-28).
 
 ### [Restructure BB Portal configuration (Sep 17, 2026)](https://github.com/buildbarn/bb-portal/commit/a7cccc3d9f70e2231036d5be1d62a2c511b9beb3)
@@ -26,8 +23,8 @@ services. This change has meant:
 * Add individual authorizers for the portal's services and configured Buildbarn
   components
 
-These are breaking changes that makes removes some of the unnecessary
-dependencies in the configuration.
+These are breaking changes that remove some of the unnecessary dependencies in
+the configuration.
 
 ### [BB Portal action comparison view (Sep 16, 2026)](https://github.com/buildbarn/bb-portal/commit/acdee57d5114fbc70206237deb625ea430177aba)
 
@@ -41,8 +38,8 @@ available.
 
 ### [Set proxy URL from environment (Sep 4, 2026)](https://github.com/buildbarn/bb-storage/commit/d825f0c474db8974e3325ab044b1716881b777bb)
 
-A option has been added for Buildbarn's HTTP client configuration, which ensures
-that proxy URLs are fetched from the environment variables instead of
+An option has been added for Buildbarn's HTTP client configuration, which
+ensures that proxy URLs are fetched from the environment variables instead of
 configuring it inline. This is enabled by setting the configuration option
 `proxyFromEnvironment: {}` instead of `proxyUrl: <url>`.
 
@@ -53,7 +50,7 @@ overview.
 
 ![critical-path](./critical-path-invocation.png)
 
-The critical paths is also shown in the invocation timeline for a build.
+The critical paths are also shown in the invocation timeline for a build.
 
 ![critical-path-invocations-timeline](./critical-path-invocations-timeline.png)
 
@@ -70,6 +67,6 @@ browser's native page search is limited, as it can only search the visible text.
 ### [Tool for partitioning ephemeral disks (Jun 23, 2026)](https://github.com/buildbarn/bb-storage/commit/b4bd7983de1a48d20942d741d5190ec533b76e24)
 
 BB Storage now includes a tool for creating a single block device containing
-seperate block devices for the CAS, AC, etc. See the [Proto
+separate block devices for the CAS, AC, etc. See the [Proto
 file](https://github.com/buildbarn/bb-storage/blob/b4bd7983de1a48d20942d741d5190ec533b76e24/pkg/proto/configuration/partition_ephemeral_disks/partition_ephemeral_disks.proto)
 for configuration options.
