@@ -153,8 +153,8 @@ const config = {
                 to: "/blog",
               },
               {
-                label: "Bug bounty",
-                to: "/bug-bounty",
+                label: "Vulnerability Disclosure Program",
+                to: "/vulnerability-disclosure-program",
               },
               {
                 label: "Privacy Policy",

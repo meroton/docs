@@ -1,17 +1,34 @@
-# Meroton Bug Bounty and Vulnerability Disclosure Program
+# Bug Bounty Program (Discontinued)
 
-We strive to have world class security with multiple layers of protection ensuring customer data is safe.
+**Notice: Our paid Bug Bounty Program is now closed.**
 
-If you believe you have found a security issue in a Meroton product or service,
-please report it directly to us at security@meroton.com.
+Like many others in the industry, including major open-source projects
+like cURL and Nextcloud, we have experienced a massive influx of
+low-quality, AI-generated vulnerability reports.
 
-We review all submissions and allow bounty rewards of up to USD 10 000
-or an equivalent donation to a charity of your choice.
+This industry-wide trend involves submitters using Large Language Models
+to generate high volumes of unverified reports. While these submissions
+often look highly professional, use convincing technical language, and
+reference real code paths, they frequently detail entirely hallucinated
+vulnerabilities that lack real-world substance.
 
-To be eligible for a reward please submit a detailed report with reproducible steps.
+Because these AI-generated reports require human security engineers to
+manually triage and attempt to reproduce the hallucinated findings, the
+sheer volume of "noise" is overwhelming. The time and resources required
+to filter out this spam has made the economics of running a paid bug
+bounty program non-viable for us at this time. By removing the financial
+incentive, we hope to deter automated spam and refocus our efforts on
+genuine security improvements.
 
-We do not accept submissions for ddos attacks or attacks which require root access.
+We want to sincerely thank the legitimate security researchers who have
+put in the hard work to help us secure Meroton products in the past.
+Your expertise and rigorous testing have been highly valued.
 
-Good faith efforts at preventing service degradation,
-user data loss and privacy violations
-are indemnified from legal action from Meroton as part of this program.
+While we are no longer offering monetary rewards or charitable
+donations, we remain committed to working with the community to ensure
+customer data is safe.
+
+If you have discovered a genuine security issue and wish to disclose it,
+please see our [Vulnerability Disclosure
+Program](/vulnerability-disclosure-program) for guidelines on how to
+safely report it to our team.
