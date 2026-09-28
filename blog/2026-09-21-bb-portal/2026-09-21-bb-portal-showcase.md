@@ -28,8 +28,8 @@ the storage daemon shares information about objects in the Action Cache (AC) and
 Content Addressable Storage (CAS); the scheduler shares information about
 workers and execution status.
 
-An example setup of Buildbarn with the portal can be found in
-[BB Deployments](https://github.com/buildbarn/bb-deployments/):
+An example setup of Buildbarn with the portal can be found in [BB
+Deployments](https://github.com/buildbarn/bb-deployments/):
 
 ![bb-deployments-example](./bb-deployments-example.jpg)
 
@@ -74,7 +74,7 @@ triggered it.
 
 The metadata extraction is configurable to suit different CI systems. A
 configuration specifies a set of tags and how they should be extracted from the
-machine's environment variables. In the bb-portal repository a predefined
+machine's environment variables. In the BB Portal repository a predefined
 metadata extractor for Github Actions is available which adds tags for pull
 request, workflow, job, and action. The repository also includes example
 configurations for Gitlab CI/CD and Semaphore.
