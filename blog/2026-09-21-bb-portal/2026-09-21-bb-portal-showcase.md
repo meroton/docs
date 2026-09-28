@@ -74,7 +74,7 @@ triggered it.
 
 The metadata extraction is configurable to suit different CI systems. A
 configuration specifies a set of tags and how they should be extracted from the
-machine's environment variables. In the bb-portal repository a predefined
+machine's environment variables. In the BB Portal repository a predefined
 metadata extractor for Github Actions is available which adds tags for pull
 request, workflow, job, and action. The repository also includes example
 configurations for Gitlab CI/CD and Semaphore.
