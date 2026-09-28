@@ -28,8 +28,8 @@ the storage daemon shares information about objects in the Action Cache (AC) and
 Content Addressable Storage (CAS); the scheduler shares information about
 workers and execution status.
 
-An example setup of Buildbarn with the portal can be found in
-[BB Deployments](https://github.com/buildbarn/bb-deployments/):
+An example setup of Buildbarn with the portal can be found in [BB
+Deployments](https://github.com/buildbarn/bb-deployments/):
 
 ![bb-deployments-example](./bb-deployments-example.jpg)
 
