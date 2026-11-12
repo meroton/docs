@@ -4,17 +4,21 @@ This website is built using [Docusaurus 2](https://docusaurus.io/), a modern sta
 
 ### Installation
 
-NodeJS on Ubuntu requires an extra apt repository.
+The required Node.js and npm versions are pinned in `.tool-versions` and enforced
+by `devEngines` in `package.json`. Install them with your version manager, for
+example [mise](https://mise.jdx.dev/):
+
 ```
-curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
-sudo apt install nodejs
-sudo apt install npm
+$ mise install
 ```
 
 Download all dependencies.
 ```
 $ npm install
 ```
+
+`.npmrc` sets `min-release-age=7`, so npm will not install packages published in
+the last 7 days. This is a supply chain protection and requires npm >= 11.10.0.
 
 ### Local Development
 
