@@ -66,15 +66,6 @@ const config = {
       }),
     ],
   ],
-  plugins: [
-    [
-      "@docusaurus/plugin-google-gtag",
-      {
-        trackingID: "G-LVF8V72WEQ",
-        anonymizeIP: true,
-      },
-    ],
-  ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
