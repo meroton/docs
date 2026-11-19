@@ -58,3 +58,8 @@ Knowledge about compilers and packaging are also a large plus.
 
 If you are looking for an interesting [Master Thesis](/master-thesis)
 you can peruse some of our suggestions.
+
+## How to apply?
+
+Send your CV and a short description of your area of interest to
+jobs@meroton.com.
